@@ -13,21 +13,44 @@ class TutorialActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(
                 R.id.container,
-                TutorialItemFragment.newInstance(getString(R.string.tutorial_first_page_label), 0)
+                TutorialItemFragment.newInstance(
+                    R.drawable.news_img_0,
+                    getString(R.string.tutorial_first_page_label),
+                    1
+                )
             )
             .commit()
     }
 
-    fun showNext(page: Int) {
-        if (page == 10) {
+    fun showNext(currentPage: Int) {
+        if (currentPage == 3) {
             finish()
             return
+        }
+        val fragment = when (currentPage) {
+            1 ->
+                TutorialItemFragment.newInstance(
+                    R.drawable.news_img_1,
+                    getString(R.string.tutorial_second_page_label),
+                    currentPage + 1
+                )
+            2 ->
+                TutorialItemFragment.newInstance(
+                    R.drawable.news_img_2,
+                    getString(R.string.tutorial_second_page_label),
+                    currentPage + 1
+                )
+            else -> TutorialItemFragment.newInstance(
+                R.drawable.news_img_0,
+                getString(R.string.tutorial_second_page_label),
+                currentPage + 1
+            )
         }
         supportFragmentManager
             .beginTransaction()
             .replace(
                 R.id.container,
-                TutorialItemFragment.newInstance("second tutorial text, not key", page + 1)
+                fragment
             )
             .commit()
     }

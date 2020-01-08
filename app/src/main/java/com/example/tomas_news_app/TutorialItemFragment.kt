@@ -10,10 +10,13 @@ import kotlinx.android.synthetic.main.fragment_tutorial.*
 
 class TutorialItemFragment : Fragment() {
 
-    lateinit var tutorialText: String
-    var page: Int = 0
+    private var tutorialImage: Int = 0
+    private lateinit var tutorialText: String
+    var page: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        tutorialImage = arguments!!.getInt(KEY_IMAGE)
         tutorialText = arguments!!.getString(KEY_LABEL) ?: ""
         page = arguments!!.getInt(KEY_PAGE)
     }
@@ -29,18 +32,21 @@ class TutorialItemFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        textView.text = "$tutorialText $page"
+        textView.text = "$tutorialText  \n page: $page"
+        appCompatImageView.setImageResource(tutorialImage)
         btnNext.setOnClickListener {
             (requireActivity() as TutorialActivity).showNext(page)
         }
     }
 
     companion object {
+        private const val KEY_IMAGE = "tutorial_image"
         private const val KEY_LABEL = "tutorial_text"
         private const val KEY_PAGE = "page"
 
-        fun newInstance(tutorialText: String, page: Int): TutorialItemFragment {
+        fun newInstance(tutorialImage: Int, tutorialText: String, page: Int): TutorialItemFragment {
             val arguments = Bundle()
+            arguments.putInt(KEY_IMAGE, tutorialImage)
             arguments.putString(KEY_LABEL, tutorialText)
             arguments.putInt(KEY_PAGE, page)
             val fragment = TutorialItemFragment()
