@@ -15,4 +15,11 @@ class TutorialActivity : AppCompatActivity() {
             .replace(R.id.container, TutorialItemFragment())
             .commit()
     }
+
+    fun showNext() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, TutorialItemFragment2())
+            .commit()
+    }
 }
