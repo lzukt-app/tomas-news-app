@@ -2,7 +2,6 @@ package com.example.tomas_news_app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 
 class TutorialActivity : AppCompatActivity() {
 

@@ -12,4 +12,4 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, TutorialActivity::class.java))
     }
 }
- //
+//

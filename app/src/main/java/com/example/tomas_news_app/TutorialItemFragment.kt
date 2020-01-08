@@ -14,7 +14,9 @@ class TutorialItemFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_tutorial, container, false)
-    }override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.btnNext).setOnClickListener {
 
