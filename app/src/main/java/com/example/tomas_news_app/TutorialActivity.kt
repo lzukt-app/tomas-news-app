@@ -11,14 +11,24 @@ class TutorialActivity : AppCompatActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.container, TutorialItemFragment())
+            .replace(
+                R.id.container,
+                TutorialItemFragment.newInstance(getString(R.string.tutorial_first_page_label), 0)
+            )
             .commit()
     }
 
-    fun showNext() {
+    fun showNext(page: Int) {
+        if (page == 10) {
+            finish()
+            return
+        }
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.container, TutorialItemFragment2())
+            .replace(
+                R.id.container,
+                TutorialItemFragment.newInstance("second tutorial text, not key", page + 1)
+            )
             .commit()
     }
 }
