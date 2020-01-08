@@ -27,7 +27,17 @@ class TutorialActivity : AppCompatActivity() {
             finish()
             return
         }
-        val fragment = when (currentPage) {
+
+        val tutorialImgList =
+            mutableListOf(R.drawable.news_img_0, R.drawable.news_img_1, R.drawable.news_img_2)
+
+        val fragment = TutorialItemFragment.newInstance(
+            tutorialImgList[currentPage],
+            getString(R.string.tutorial_second_page_label),
+            currentPage + 1
+        )
+
+        /*val fragment = when (currentPage) {
             1 ->
                 TutorialItemFragment.newInstance(
                     R.drawable.news_img_1,
@@ -45,7 +55,8 @@ class TutorialActivity : AppCompatActivity() {
                 getString(R.string.tutorial_second_page_label),
                 currentPage + 1
             )
-        }
+        }*/
+
         supportFragmentManager
             .beginTransaction()
             .replace(
