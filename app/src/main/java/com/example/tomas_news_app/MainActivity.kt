@@ -3,6 +3,7 @@ package com.example.tomas_news_app
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.tomas_news_app.tutorial.TutorialActivity
 
 class MainActivity : AppCompatActivity() {
 

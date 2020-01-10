@@ -1,4 +1,4 @@
-package com.example.tomas_news_app
+package com.example.tomas_news_app.tutorial
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.tomas_news_app.R
 import kotlinx.android.synthetic.main.fragment_tutorial.*
 
 class TutorialItemFragment : Fragment() {
@@ -20,7 +21,9 @@ class TutorialItemFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val config = arguments!!.getParcelable<TutorialScreenConfig>(KEY_CONFIG)!!
+        val config = arguments!!.getParcelable<TutorialScreenConfig>(
+            KEY_CONFIG
+        )!!
         textView.text = "${config.tutorialText}  \n page:"
         btnNext.text = "${config.tutorialButton}"
         appCompatImageView.setImageResource(config.tutorialImage)
@@ -35,7 +38,8 @@ class TutorialItemFragment : Fragment() {
         fun newInstance(config: TutorialScreenConfig): TutorialItemFragment {
             val arguments = Bundle()
             arguments.putParcelable(KEY_CONFIG, config)
-            val fragment = TutorialItemFragment()
+            val fragment =
+                TutorialItemFragment()
             fragment.arguments = arguments
             return fragment
         }

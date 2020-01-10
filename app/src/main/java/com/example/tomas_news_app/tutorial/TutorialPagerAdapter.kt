@@ -1,9 +1,10 @@
-package com.example.tomas_news_app
+package com.example.tomas_news_app.tutorial
 
 import android.content.res.Resources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.example.tomas_news_app.R
 
 class TutorialPagerAdapter(
     fragmentManager: FragmentManager,
