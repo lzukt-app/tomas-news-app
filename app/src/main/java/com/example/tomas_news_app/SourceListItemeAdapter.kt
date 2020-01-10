@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.item_source.view.*
 
 class SourceListItemeAdapter : RecyclerView.Adapter<SourceListItemeAdapter.ViewHolder>() {
 
-    private val list = mutableListOf<Source>()
+    private val list = mutableListOf<SourceActivity>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -31,14 +31,14 @@ class SourceListItemeAdapter : RecyclerView.Adapter<SourceListItemeAdapter.ViewH
         holder.bind(list[position])
     }
 
-    fun setItems(list: List<Source>) {
+    fun setItems(list: List<SourceActivity>) {
         this.list.clear()
         this.list.addAll(list)
         notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(source: Source) {
+        fun bind(source: SourceActivity) {
             itemView.title.text = source.title
             itemView.description.text = source.description
         }

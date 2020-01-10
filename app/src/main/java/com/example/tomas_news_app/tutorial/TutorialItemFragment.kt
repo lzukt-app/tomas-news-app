@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.tomas_news_app.R
+import kotlinx.android.synthetic.main.activity_tutorial.*
 import kotlinx.android.synthetic.main.fragment_tutorial.*
 
 class TutorialItemFragment : Fragment() {
@@ -24,7 +25,7 @@ class TutorialItemFragment : Fragment() {
         val config = arguments!!.getParcelable<TutorialScreenConfig>(
             KEY_CONFIG
         )!!
-        textView.text = "${config.tutorialText}  \n page:"
+        textView.text = "${config.tutorialText}  \n page: "
         btnNext.text = "${config.tutorialButton}"
         appCompatImageView.setImageResource(config.tutorialImage)
         btnNext.setOnClickListener {
