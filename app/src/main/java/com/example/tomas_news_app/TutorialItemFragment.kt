@@ -21,11 +21,11 @@ class TutorialItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val config = arguments!!.getParcelable<TutorialScreenConfig>(KEY_CONFIG)!!
-        textView.text = "${config.tutorialText}  \n page: ${config.page + 1}"
+        textView.text = "${config.tutorialText}  \n page:"
         btnNext.text = "${config.tutorialButton}"
         appCompatImageView.setImageResource(config.tutorialImage)
         btnNext.setOnClickListener {
-            (requireActivity() as TutorialActivity).showNext(config.page +1)
+            (requireActivity() as TutorialActivity).showNext()
         }
     }
 

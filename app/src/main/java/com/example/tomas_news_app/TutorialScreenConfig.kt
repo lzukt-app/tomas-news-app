@@ -8,6 +8,5 @@ import kotlinx.android.parcel.Parcelize
 data class TutorialScreenConfig(
     val tutorialImage: Int,
     val tutorialText: String,
-    val tutorialButton: String,
-    val page: Int
+    val tutorialButton: String
 ) :Parcelable
