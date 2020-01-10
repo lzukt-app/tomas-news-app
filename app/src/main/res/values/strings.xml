@@ -2,4 +2,7 @@
     <string name="app_name">NewsApp</string>
     <string name="tutorial_first_page_label">actual tutorial text, not key</string>
     <string name="tutorial_second_page_label">second tutorial text, not key</string>
+    <string name="tutorial_last_page_label">last tutorial text, not key</string>
+    <string name="tutorial_button">Next</string>
+    <string name="tutorial_button_last">Done</string>
 </resources>

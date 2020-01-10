@@ -9,19 +9,6 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_tutorial.*
 
 class TutorialItemFragment : Fragment() {
-
-    private var tutorialImage: Int = 0
-    private lateinit var tutorialText: String
-    var page: Int = -1
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val config = arguments!!.getParcelable<TutorialScreenConfig>(KEY_CONFIG)!!
-        tutorialImage = config.tutorialImage
-        tutorialText = config.tutorialText
-        page = config.page
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,10 +20,12 @@ class TutorialItemFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        textView.text = "$tutorialText  \n page: $page"
-        appCompatImageView.setImageResource(tutorialImage)
+        val config = arguments!!.getParcelable<TutorialScreenConfig>(KEY_CONFIG)!!
+        textView.text = "${config.tutorialText}  \n page: ${config.page + 1}"
+        btnNext.text = "${config.tutorialButton}"
+        appCompatImageView.setImageResource(config.tutorialImage)
         btnNext.setOnClickListener {
-            (requireActivity() as TutorialActivity).showNext(page)
+            (requireActivity() as TutorialActivity).showNext(config.page +1)
         }
     }
 
