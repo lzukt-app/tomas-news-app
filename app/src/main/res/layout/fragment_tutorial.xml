@@ -21,7 +21,7 @@
         android:id="@+id/textView"
         android:layout_width="274dp"
         android:layout_height="106dp"
-        android:text="NewsApp - Tutorial screen 1"
+        android:text="NewsApp - Tutorial screen"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

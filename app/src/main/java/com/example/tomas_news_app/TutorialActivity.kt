@@ -23,7 +23,7 @@ class TutorialActivity : AppCompatActivity() {
     }
 
     fun showNext(currentPage: Int) {
-        if (currentPage == 3) {
+        if (currentPage >= LAST_PAGE) {
             finish()
             return
         }
@@ -37,26 +37,6 @@ class TutorialActivity : AppCompatActivity() {
             currentPage + 1
         )
 
-        /*val fragment = when (currentPage) {
-            1 ->
-                TutorialItemFragment.newInstance(
-                    R.drawable.news_img_1,
-                    getString(R.string.tutorial_second_page_label),
-                    currentPage + 1
-                )
-            2 ->
-                TutorialItemFragment.newInstance(
-                    R.drawable.news_img_2,
-                    getString(R.string.tutorial_second_page_label),
-                    currentPage + 1
-                )
-            else -> TutorialItemFragment.newInstance(
-                R.drawable.news_img_0,
-                getString(R.string.tutorial_second_page_label),
-                currentPage + 1
-            )
-        }*/
-
         supportFragmentManager
             .beginTransaction()
             .replace(
@@ -64,5 +44,9 @@ class TutorialActivity : AppCompatActivity() {
                 fragment
             )
             .commit()
+    }
+
+    companion object {
+        const val LAST_PAGE: Int = 3
     }
 }
