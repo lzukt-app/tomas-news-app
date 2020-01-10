@@ -17,4 +17,10 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.container, SourceListFragment.newInstance())
             .commit()
     }
+
+    fun showNews(source: SourceItem) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, NewsListFragment.newInstance())
+            .commit()
+    }
 }

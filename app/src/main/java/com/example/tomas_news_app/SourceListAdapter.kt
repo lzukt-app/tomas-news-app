@@ -4,11 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_source.view.*
+import kotlinx.android.synthetic.main.activity_source.view.*
 
-class SourceListItemeAdapter : RecyclerView.Adapter<SourceListItemeAdapter.ViewHolder>() {
+class SourceListAdapter(
+    val onSelected: (SourceItem) -> Unit
+) : RecyclerView.Adapter<SourceListAdapter.ViewHolder>() {
 
-    private val list = mutableListOf<SourceActivity>()
+    private val list = mutableListOf<SourceItem>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -16,7 +18,7 @@ class SourceListItemeAdapter : RecyclerView.Adapter<SourceListItemeAdapter.ViewH
     ): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.item_source,
+                R.layout.activity_source,
                 parent,
                 false
             )
@@ -31,16 +33,19 @@ class SourceListItemeAdapter : RecyclerView.Adapter<SourceListItemeAdapter.ViewH
         holder.bind(list[position])
     }
 
-    fun setItems(list: List<SourceActivity>) {
+    fun setItems(list: List<SourceItem>) {
         this.list.clear()
         this.list.addAll(list)
         notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(source: SourceActivity) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(source: SourceItem) {
             itemView.title.text = source.title
             itemView.description.text = source.description
+            itemView.setOnClickListener {
+                onSelected.invoke(source)
+            }
         }
     }
 }
