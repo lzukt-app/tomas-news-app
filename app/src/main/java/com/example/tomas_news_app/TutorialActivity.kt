@@ -9,14 +9,18 @@ class TutorialActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tutorial)
 
+        val config = TutorialScreenConfig(
+            tutorialImage = R.drawable.news_img_0,
+            tutorialText = getString(R.string.tutorial_first_page_label),
+            page = 1
+        )
+
         supportFragmentManager
             .beginTransaction()
             .replace(
                 R.id.container,
                 TutorialItemFragment.newInstance(
-                    R.drawable.news_img_0,
-                    getString(R.string.tutorial_first_page_label),
-                    1
+                    config
                 )
             )
             .commit()
@@ -31,10 +35,15 @@ class TutorialActivity : AppCompatActivity() {
         val tutorialImgList =
             mutableListOf(R.drawable.news_img_0, R.drawable.news_img_1, R.drawable.news_img_2)
 
+        val config = TutorialScreenConfig(
+            tutorialImage = tutorialImgList[currentPage],
+            tutorialText = getString(R.string.tutorial_second_page_label),
+            page = currentPage + 1
+        )
+
+
         val fragment = TutorialItemFragment.newInstance(
-            tutorialImgList[currentPage],
-            getString(R.string.tutorial_second_page_label),
-            currentPage + 1
+            config
         )
 
         supportFragmentManager

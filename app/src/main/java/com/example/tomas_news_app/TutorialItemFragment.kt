@@ -16,9 +16,10 @@ class TutorialItemFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tutorialImage = arguments!!.getInt(KEY_IMAGE)
-        tutorialText = arguments!!.getString(KEY_LABEL) ?: ""
-        page = arguments!!.getInt(KEY_PAGE)
+        val config = arguments!!.getParcelable<TutorialScreenConfig>(KEY_CONFIG)!!
+        tutorialImage = config.tutorialImage
+        tutorialText = config.tutorialText
+        page = config.page
     }
 
     override fun onCreateView(
@@ -40,15 +41,11 @@ class TutorialItemFragment : Fragment() {
     }
 
     companion object {
-        private const val KEY_IMAGE = "tutorial_image"
-        private const val KEY_LABEL = "tutorial_text"
-        private const val KEY_PAGE = "page"
+        private const val KEY_CONFIG = "tutorial_config"
 
-        fun newInstance(tutorialImage: Int, tutorialText: String, page: Int): TutorialItemFragment {
+        fun newInstance(config: TutorialScreenConfig): TutorialItemFragment {
             val arguments = Bundle()
-            arguments.putInt(KEY_IMAGE, tutorialImage)
-            arguments.putString(KEY_LABEL, tutorialText)
-            arguments.putInt(KEY_PAGE, page)
+            arguments.putParcelable(KEY_CONFIG, config)
             val fragment = TutorialItemFragment()
             fragment.arguments = arguments
             return fragment
