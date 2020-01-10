@@ -12,12 +12,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        startActivity(Intent(this, TutorialActivity::class.java))
+
+        //startActivity(Intent(this, TutorialActivity::class.java))
 
         recycler.layoutManager = LinearLayoutManager(this)
 
         val adapter = SourceListItemeAdapter()
-        adapter.setItems(listOf(Source("title"), Source("title")))
+        adapter.setItems(listOf(
+            Source("title 1", "description"),
+            Source("title 2", "description"),
+            Source("title 3", "description"),
+            Source("title 4", "description"),
+            Source("title 5", "description")
+        ))
         recycler.adapter = adapter
     }
 }

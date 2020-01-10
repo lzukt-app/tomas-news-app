@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.item_source.view.*
 class SourceListItemeAdapter : RecyclerView.Adapter<SourceListItemeAdapter.ViewHolder>() {
 
     private val list = mutableListOf<Source>()
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -39,6 +40,7 @@ class SourceListItemeAdapter : RecyclerView.Adapter<SourceListItemeAdapter.ViewH
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(source: Source) {
             itemView.title.text = source.title
+            itemView.description.text = source.description
         }
     }
 }
