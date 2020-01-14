@@ -5,13 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tomas_news_app.main.MainActivity
 import com.example.tomas_news_app.R
+import com.example.tomas_news_app.main.MainViewModel
+import com.example.tomas_news_app.main.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_source_list.*
 
 class SourceListFragment : Fragment() {
-
+    lateinit var viewModel: SourceViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -26,32 +30,17 @@ class SourceListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler.layoutManager = LinearLayoutManager(requireContext())
-        val adapter =
-            SourceListAdapter(::onSourceSelected)
-        adapter.setItems(
-            listOf(
-                SourceItem(
-                    "title 1",
-                    "description"
-                ),
-                SourceItem(
-                    "title 2",
-                    "description"
-                ),
-                SourceItem(
-                    "title 3",
-                    "description"
-                ),
-                SourceItem(
-                    "title 4",
-                    "description"
-                ),
-                SourceItem(
-                    "title 5",
-                    "description"
-                )
-            )
+        val adapter = SourceListAdapter(::onSourceSelected)
+
+        viewModel = ViewModelProviders.of(
+            this,
+            SourceViewModelFactory(requireActivity().application)
         )
+            .get(SourceViewModel::class.java)
+
+        viewModel.data.observe(this, Observer { newData ->
+            adapter.setItems(newData)
+        })
         recycler.adapter = adapter
     }
 
