@@ -18,6 +18,12 @@ class SourceListFragment : Fragment() {
     lateinit var viewModel: SourceViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProviders.of(
+            this,
+            SourceViewModelFactory(requireActivity().application)
+        )
+            .get(SourceViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -32,11 +38,6 @@ class SourceListFragment : Fragment() {
         recycler.layoutManager = LinearLayoutManager(requireContext())
         val adapter = SourceListAdapter(::onSourceSelected)
 
-        viewModel = ViewModelProviders.of(
-            this,
-            SourceViewModelFactory(requireActivity().application)
-        )
-            .get(SourceViewModel::class.java)
 
         viewModel.data.observe(this, Observer { newData ->
             adapter.setItems(newData)

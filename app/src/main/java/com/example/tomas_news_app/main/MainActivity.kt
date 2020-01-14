@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        viewModel = ViewModelProviders.of(this,
+        viewModel = ViewModelProviders.of(
+            this,
             MainViewModelFactory(application)
         )
             .get(MainViewModel::class.java)
@@ -29,8 +30,9 @@ class MainActivity : AppCompatActivity() {
             this.showTutorial()
         })
 
-
-        this.showSource()
+        if (savedInstanceState == null) {
+            this.showSource()
+        }
         //this.showAbout()
     }
 
