@@ -8,7 +8,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class SourceViewModel(
-    val service: SourceService
+    service: SourceService
 
 ) : ViewModel() {
     private val _data = MutableLiveData<List<SourceItem>>()
@@ -25,7 +25,7 @@ class SourceViewModel(
                 response: Response<SourceListResponse>
             ) {
                 response.body()!!.sources
-                    .map { SourceItem(it.name, it.description) }
+                    .map { SourceItem(it.id, it.name, it.description) }
                     .let { _data.postValue(it) }
             }
 

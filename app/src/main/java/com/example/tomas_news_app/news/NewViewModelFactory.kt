@@ -8,10 +8,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class NewViewModelFactory (private  val application: Application) :
+class NewViewModelFactory(private val application: Application, private val sourceId: String) :
     ViewModelProvider.AndroidViewModelFactory(
         application
-    ){
+    ) {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         val client = OkHttpClient.Builder()
             .addNetworkInterceptor(HttpLoggingInterceptor().apply {
@@ -27,7 +27,7 @@ class NewViewModelFactory (private  val application: Application) :
 
         val service = retrofit.create(NewsService::class.java)
 
-        return NewViewModel(service) as T
+        return NewViewModel(service, sourceId) as T
     }
 
 }

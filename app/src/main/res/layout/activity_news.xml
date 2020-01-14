@@ -1,48 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/appCompatImageView"
-        android:layout_width="109dp"
-        android:layout_height="93dp"
+        android:id="@+id/imageUrl"
+        android:layout_width="113dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/news_img_0"
-        app:layout_constraintEnd_toStartOf="@+id/title"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-2dp" />
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="241dp"
-        android:layout_height="41dp"
+        android:layout_width="234dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="48dp"
-        android:text="Title"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/description"
-        android:layout_width="411dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="22dp"
-        android:text="description"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="363dp"
+        android:layout_height="53dp"
+        android:text=""
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageUrl" />
 
     <TextView
         android:id="@+id/datetime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="date time"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
-
+        android:layout_marginBottom="20dp"
+        android:text=""
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        tools:layout_editor_absoluteX="-1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

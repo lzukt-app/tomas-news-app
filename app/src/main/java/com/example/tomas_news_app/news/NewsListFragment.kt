@@ -9,10 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tomas_news_app.R
-import com.example.tomas_news_app.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_source_list.*
 
-class NewsListFragment : Fragment() {
+class NewsListFragment(sourceId: String) : Fragment() {
+    var sourceId: String = sourceId
     lateinit var viewModel: NewViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,7 @@ class NewsListFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(
             this,
-            NewViewModelFactory(requireActivity().application)
+            NewViewModelFactory(requireActivity().application, sourceId)
         )
             .get(NewViewModel::class.java)
     }
@@ -48,7 +48,7 @@ class NewsListFragment : Fragment() {
     }
 */
     companion object {
-        fun newInstance() = NewsListFragment()
+        fun newInstance(id: String) = NewsListFragment(id)
     }
 
 }

@@ -5,7 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tomas_news_app.R
-import kotlinx.android.synthetic.main.activity_source.view.*
+import com.example.tomas_news_app.utils.DownLoadImageTask
+import kotlinx.android.synthetic.main.activity_news.view.*
+import kotlinx.android.synthetic.main.activity_source.view.description
+import kotlinx.android.synthetic.main.activity_source.view.title
 
 class NewsListAdapter(
     //val onSelected: (NewsItem) -> Unit
@@ -42,12 +45,16 @@ class NewsListAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(source: NewsItem) {
+            DownLoadImageTask(itemView.imageUrl).execute(source.urlToImage)
+            //itemView.appCompatImageView.setImageResource(R.drawable.news_img_2)
             itemView.title.text = source.title
             itemView.description.text = source.description
+            itemView.datetime.text = source.datetime
             /*itemView.setOnClickListener {
                 onSelected.invoke(source)
             }*/
         }
     }
+
 
 }

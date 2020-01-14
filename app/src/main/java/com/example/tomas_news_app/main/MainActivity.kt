@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     fun showNews(source: SourceItem) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, NewsListFragment.newInstance())
+            .replace(R.id.container, NewsListFragment.newInstance(source.id))
             .commit()
     }
 
