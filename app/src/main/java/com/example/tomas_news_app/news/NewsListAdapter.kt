@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tomas_news_app.R
 import kotlinx.android.synthetic.main.activity_source.view.*
 
-class NewsListAdapter: RecyclerView.Adapter<NewsListAdapter.ViewHolder>() {
+class NewsListAdapter(
+    //val onSelected: (NewsItem) -> Unit
+) : RecyclerView.Adapter<NewsListAdapter.ViewHolder>() {
 
     private val list = mutableListOf<NewsItem>()
 
@@ -38,10 +40,13 @@ class NewsListAdapter: RecyclerView.Adapter<NewsListAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(source: NewsItem) {
             itemView.title.text = source.title
             itemView.description.text = source.description
+            /*itemView.setOnClickListener {
+                onSelected.invoke(source)
+            }*/
         }
     }
 

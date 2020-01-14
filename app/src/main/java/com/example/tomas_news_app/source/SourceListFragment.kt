@@ -10,12 +10,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tomas_news_app.main.MainActivity
 import com.example.tomas_news_app.R
-import com.example.tomas_news_app.main.MainViewModel
-import com.example.tomas_news_app.main.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_source_list.*
 
 class SourceListFragment : Fragment() {
     lateinit var viewModel: SourceViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,13 +35,12 @@ class SourceListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler.layoutManager = LinearLayoutManager(requireContext())
+
         val adapter = SourceListAdapter(::onSourceSelected)
-
-
+        recycler.adapter = adapter
         viewModel.data.observe(this, Observer { newData ->
             adapter.setItems(newData)
         })
-        recycler.adapter = adapter
     }
 
     private fun onSourceSelected(source: SourceItem) {

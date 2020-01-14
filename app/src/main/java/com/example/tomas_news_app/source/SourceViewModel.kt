@@ -9,6 +9,7 @@ import retrofit2.Response
 
 class SourceViewModel(
     val service: SourceService
+
 ) : ViewModel() {
     private val _data = MutableLiveData<List<SourceItem>>()
     val data: LiveData<List<SourceItem>> get() = _data
