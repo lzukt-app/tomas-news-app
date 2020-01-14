@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.tomas_news_app.MainActivity
+import com.example.tomas_news_app.main.MainActivity
 import com.example.tomas_news_app.R
 import kotlinx.android.synthetic.main.fragment_source_list.*
 
