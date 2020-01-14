@@ -1,4 +1,4 @@
-package com.example.tomas_news_app
+package com.example.tomas_news_app.source
 
 data class SourceItem(
     val title: String,

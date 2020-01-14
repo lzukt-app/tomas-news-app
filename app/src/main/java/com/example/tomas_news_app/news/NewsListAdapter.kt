@@ -1,16 +1,15 @@
-package com.example.tomas_news_app
+package com.example.tomas_news_app.news
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tomas_news_app.R
 import kotlinx.android.synthetic.main.activity_source.view.*
 
-class SourceListAdapter(
-    val onSelected: (SourceItem) -> Unit
-) : RecyclerView.Adapter<SourceListAdapter.ViewHolder>() {
+class NewsListAdapter: RecyclerView.Adapter<NewsListAdapter.ViewHolder>() {
 
-    private val list = mutableListOf<SourceItem>()
+    private val list = mutableListOf<NewsItem>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -18,7 +17,7 @@ class SourceListAdapter(
     ): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.activity_source,
+                R.layout.activity_news,
                 parent,
                 false
             )
@@ -33,19 +32,17 @@ class SourceListAdapter(
         holder.bind(list[position])
     }
 
-    fun setItems(list: List<SourceItem>) {
+    fun setItems(list: List<NewsItem>) {
         this.list.clear()
         this.list.addAll(list)
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(source: SourceItem) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(source: NewsItem) {
             itemView.title.text = source.title
             itemView.description.text = source.description
-            itemView.setOnClickListener {
-                onSelected.invoke(source)
-            }
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package com.example.tomas_news_app
+package com.example.tomas_news_app.news
 
 data class NewsItem (
     val image: Int,
