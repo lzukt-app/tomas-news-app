@@ -7,9 +7,10 @@ import android.widget.ImageView
 import android.widget.Toast
 import java.net.URL
 
-
+@Deprecated("Old example do not use")
 class DownLoadImageTask(internal val imageView: ImageView) :
     AsyncTask<String, Void, Bitmap?>() {
+
     override fun doInBackground(vararg urls: String): Bitmap? {
         val urlOfImage = urls[0]
         return try {

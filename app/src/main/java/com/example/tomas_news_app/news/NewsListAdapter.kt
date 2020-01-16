@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.tomas_news_app.R
-import com.example.tomas_news_app.utils.DownLoadImageTask
 import kotlinx.android.synthetic.main.activity_news.view.*
 import kotlinx.android.synthetic.main.activity_source.view.description
 import kotlinx.android.synthetic.main.activity_source.view.title
@@ -45,8 +45,9 @@ class NewsListAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(source: NewsItem) {
-            DownLoadImageTask(itemView.imageUrl).execute(source.urlToImage)
             //itemView.appCompatImageView.setImageResource(R.drawable.news_img_2)
+            //DownLoadImageTask(itemView.imageUrl).execute(source.urlToImage)
+            Glide.with(itemView).load(source.urlToImage).into(itemView.imageUrl)
             itemView.title.text = source.title
             itemView.description.text = source.description
             itemView.datetime.text = source.datetime
