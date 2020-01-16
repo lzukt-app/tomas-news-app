@@ -9,3 +9,7 @@ fun reFormatDate(dateTime: String): String {
     val date = parseDateFormatter.parse(dateTime)
     return displayDateFormatter.format(date)
 }
+
+fun formatDate(date: Date): String {
+    return SimpleDateFormat("yyyy-MM-dd", Locale.US).format(date)
+}

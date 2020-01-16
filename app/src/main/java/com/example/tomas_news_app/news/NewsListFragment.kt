@@ -10,7 +10,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tomas_news_app.R
 import com.example.tomas_news_app.source.SourceItem
-import kotlinx.android.synthetic.main.fragment_source_list.*
+import kotlinx.android.synthetic.main.fragment_news_list.*
+import kotlinx.android.synthetic.main.fragment_source_list.recycler
 
 class NewsListFragment() : Fragment() {
     lateinit var sourceId: String
@@ -44,6 +45,18 @@ class NewsListFragment() : Fragment() {
         viewModel.data.observe(this, Observer { newData ->
             adapter.setItems(newData)
         })
+
+        chip_popular_today.setOnClickListener {
+            viewModel.onPopularTodayArticlesSelected()
+        }
+
+        chip_popular_all_time.setOnClickListener {
+            viewModel.onAllTimeArticlesSelected()
+        }
+
+        chip_newest.setOnClickListener {
+            viewModel.onNewestArticlesSelected()
+        }
     }
 
     /*
@@ -51,6 +64,7 @@ class NewsListFragment() : Fragment() {
             //(requireActivity() as MainActivity).showNews(source)
         }
     */
+
     companion object {
 
         private const val KEY_SOURCE_TITLE = "key_source_title"

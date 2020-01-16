@@ -4,6 +4,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface SourceService {
-    @GET("/v2/sources?apiKey=57a79eac5a8f44efa2bd3408139b83f3")
+    @GET("/v2/sources?apiKey=99a854b9996b4be39a07090624c62e4d")
     fun getSources(): Call<SourceListResponse>
 }

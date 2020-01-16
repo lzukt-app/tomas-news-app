@@ -11,4 +11,8 @@
     <string name="developer">Tomas,</string>
     <string name="company">LZUKT</string>
     <string name="toolbar_title_source_list">Source list</string>
+
+    <string name="popular_today">Popular today</string>
+    <string name="newest">Newest</string>
+    <string name="popular_all_time">Popular All time</string>
 </resources>
