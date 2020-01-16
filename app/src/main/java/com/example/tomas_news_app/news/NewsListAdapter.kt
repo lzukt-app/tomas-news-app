@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tomas_news_app.R
+import com.example.tomas_news_app.utils.reFormatDate
 import kotlinx.android.synthetic.main.activity_news.view.*
 import kotlinx.android.synthetic.main.activity_source.view.description
 import kotlinx.android.synthetic.main.activity_source.view.title
@@ -47,11 +48,12 @@ class NewsListAdapter(
         fun bind(source: NewsItem) {
             //itemView.imageUrl.setImageResource(R.drawable.loading)
             //DownLoadImageTask(itemView.imageUrl).execute(source.urlToImage)
-            Glide.with(itemView).load(source.urlToImage).placeholder(R.drawable.loading).into(itemView.imageUrl)
+            Glide.with(itemView).load(source.urlToImage).placeholder(R.drawable.loading)
+                .into(itemView.imageUrl)
             itemView.title.text = source.title
             itemView.description.text = source.description
-            //itemView.datetime.text = DateFormat.getDateInstance(DateFormat.LONG, Locale.ENGLISH).format(source.datetime)
-            itemView.datetime.text = source.datetime
+            itemView.datetime.text = reFormatDate(source.datetime)
+
             /*itemView.setOnClickListener {
                 onSelected.invoke(source)
             }*/

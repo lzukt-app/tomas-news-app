@@ -13,7 +13,6 @@ class MainViewModel constructor(
     val showTutorial: LiveData<Unit> get() = _showTutorial
 
     init {
-        //_showTutorial.postValue(Unit)
         if (!preferences.getBoolean("tutorial_is_shown", false)) {
             _showTutorial.postValue(Unit)
             preferences.edit().putBoolean("tutorial_is_shown", true).apply()
