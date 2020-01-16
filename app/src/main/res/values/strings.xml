@@ -6,9 +6,9 @@
     <string name="tutorial_button">Next</string>
     <string name="tutorial_button_last">Done</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="version">Version</string>
     <string name="developer">Tomas,</string>
     <string name="company">LZUKT</string>
+    <string name="toolbar_title_source_list">Source list</string>
 </resources>

@@ -24,6 +24,8 @@ class AboutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().title = "about fragment title"
+
         version.text = "${getString(R.string.version)} ${BuildConfig.VERSION_NAME}"
         other.text = "${getString(R.string.developer)} ${getString(
             R.string.company

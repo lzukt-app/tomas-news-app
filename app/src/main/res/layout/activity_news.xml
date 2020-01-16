@@ -11,7 +11,8 @@
         android:layout_width="113dp"
         android:layout_height="85dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/news_img_0"
+        android:duration="100"
+        android:src="@drawable/loading"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="-2dp" />
 

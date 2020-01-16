@@ -9,14 +9,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tomas_news_app.R
+import com.example.tomas_news_app.source.SourceItem
 import kotlinx.android.synthetic.main.fragment_source_list.*
 
-class NewsListFragment(sourceId: String) : Fragment() {
-    var sourceId: String = sourceId
+class NewsListFragment() : Fragment() {
+    lateinit var sourceId: String
     lateinit var viewModel: NewViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sourceId = arguments!!.getString(KEY_SOURCE_ID) ?: ""
 
         viewModel = ViewModelProviders.of(
             this,
@@ -35,6 +37,7 @@ class NewsListFragment(sourceId: String) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler.layoutManager = LinearLayoutManager(requireContext())
+        requireActivity().title = arguments!!.getString(KEY_SOURCE_TITLE)
 
         val adapter = NewsListAdapter()
         recycler.adapter = adapter
@@ -42,13 +45,25 @@ class NewsListFragment(sourceId: String) : Fragment() {
             adapter.setItems(newData)
         })
     }
-/*
-    private fun onNewSelected(source: NewsItem) {
-        //(requireActivity() as MainActivity).showNews(source)
-    }
-*/
+
+    /*
+        private fun onNewSelected(source: NewsItem) {
+            //(requireActivity() as MainActivity).showNews(source)
+        }
+    */
     companion object {
-        fun newInstance(id: String) = NewsListFragment(id)
+
+        private const val KEY_SOURCE_TITLE = "key_source_title"
+        private const val KEY_SOURCE_ID = "key_source_id"
+
+        fun newInstance(sourceItem: SourceItem): NewsListFragment {
+            val arguments = Bundle()
+            arguments.putString(KEY_SOURCE_TITLE, sourceItem.title)
+            arguments.putString(KEY_SOURCE_ID, sourceItem.id)
+            val fragment = NewsListFragment()
+            fragment.arguments = arguments
+            return fragment
+        }
     }
 
 }

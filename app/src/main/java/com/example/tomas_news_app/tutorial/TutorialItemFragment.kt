@@ -21,6 +21,8 @@ class TutorialItemFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().title = "tutorial fragment title"
+
         val config = arguments!!.getParcelable<TutorialScreenConfig>(
             KEY_CONFIG
         )!!

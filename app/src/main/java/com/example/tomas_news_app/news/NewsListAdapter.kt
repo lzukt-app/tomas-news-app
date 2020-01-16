@@ -45,11 +45,12 @@ class NewsListAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(source: NewsItem) {
-            //itemView.appCompatImageView.setImageResource(R.drawable.news_img_2)
+            //itemView.imageUrl.setImageResource(R.drawable.loading)
             //DownLoadImageTask(itemView.imageUrl).execute(source.urlToImage)
-            Glide.with(itemView).load(source.urlToImage).into(itemView.imageUrl)
+            Glide.with(itemView).load(source.urlToImage).placeholder(R.drawable.loading).into(itemView.imageUrl)
             itemView.title.text = source.title
             itemView.description.text = source.description
+            //itemView.datetime.text = DateFormat.getDateInstance(DateFormat.LONG, Locale.ENGLISH).format(source.datetime)
             itemView.datetime.text = source.datetime
             /*itemView.setOnClickListener {
                 onSelected.invoke(source)

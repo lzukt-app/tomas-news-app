@@ -11,6 +11,7 @@ import com.example.tomas_news_app.news.NewsListFragment
 import com.example.tomas_news_app.source.SourceItem
 import com.example.tomas_news_app.source.SourceListFragment
 import com.example.tomas_news_app.tutorial.TutorialActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +34,11 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             this.showSource()
         }
+
+        setSupportActionBar(toolbar)
+        actionBar?.setDisplayShowHomeEnabled(true)
+        title = "@string/app_name"
+
         //this.showAbout()
     }
 
@@ -48,7 +54,8 @@ class MainActivity : AppCompatActivity() {
 
     fun showNews(source: SourceItem) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, NewsListFragment.newInstance(source.id))
+            .addToBackStack(null)
+            .replace(R.id.container, NewsListFragment.newInstance(source))
             .commit()
     }
 

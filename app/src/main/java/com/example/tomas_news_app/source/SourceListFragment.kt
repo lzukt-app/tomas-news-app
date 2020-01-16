@@ -1,15 +1,15 @@
 package com.example.tomas_news_app.source
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.tomas_news_app.main.MainActivity
 import com.example.tomas_news_app.R
+import com.example.tomas_news_app.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_source_list.*
 
 class SourceListFragment : Fragment() {
@@ -35,6 +35,7 @@ class SourceListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler.layoutManager = LinearLayoutManager(requireContext())
+        requireActivity().title = getString(R.string.toolbar_title_source_list)
 
         val adapter = SourceListAdapter(::onSourceSelected)
         recycler.adapter = adapter
