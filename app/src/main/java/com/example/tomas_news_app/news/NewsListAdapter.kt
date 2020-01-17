@@ -1,5 +1,6 @@
 package com.example.tomas_news_app.news
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,8 +49,8 @@ class NewsListAdapter(
         fun bind(source: NewsItem) {
             //itemView.imageUrl.setImageResource(R.drawable.loading)
             //DownLoadImageTask(itemView.imageUrl).execute(source.urlToImage)
-            Glide.with(itemView).load(source.urlToImage).placeholder(R.drawable.loading)
-                .into(itemView.imageUrl)
+            //Glide.with(itemView).load(source.urlToImage).placeholder(R.drawable.loading).into(itemView.imageUrl)
+            Glide.with(itemView).load(source.urlToImage).into(itemView.imageUrl)
             itemView.title.text = source.title
             itemView.description.text = source.description
             itemView.datetime.text = reFormatDate(source.datetime)
