@@ -9,10 +9,11 @@
     tools:context=".main.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:background="?colorPrimary"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"/>
+        android:paddingLeft="50dp"
+        android:background="?colorPrimary" />
 
     <FrameLayout
         android:id="@+id/container"
@@ -23,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
 

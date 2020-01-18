@@ -1,6 +1,7 @@
 package com.example.tomas_news_app.news
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tomas_news_app.R
+import com.example.tomas_news_app.article.Article
+import com.example.tomas_news_app.main.MainActivity
 import com.example.tomas_news_app.source.SourceItem
 import kotlinx.android.synthetic.main.fragment_news_list.*
 import kotlinx.android.synthetic.main.fragment_source_list.recycler
@@ -40,7 +43,7 @@ class NewsListFragment() : Fragment() {
         recycler.layoutManager = LinearLayoutManager(requireContext())
         requireActivity().title = arguments!!.getString(KEY_SOURCE_TITLE)
 
-        val adapter = NewsListAdapter()
+        val adapter = NewsListAdapter(::onNewSelected)
         recycler.adapter = adapter
         viewModel.data.observe(this, Observer { newData ->
             adapter.setItems(newData)
@@ -59,11 +62,12 @@ class NewsListFragment() : Fragment() {
         }
     }
 
-    /*
-        private fun onNewSelected(source: NewsItem) {
-            //(requireActivity() as MainActivity).showNews(source)
-        }
-    */
+
+    private fun onNewSelected(article: NewsItem) {
+        Log.d("TEST2", "${article!!}")
+        //(requireActivity() as MainActivity).showArticle(article)
+    }
+
 
     companion object {
 

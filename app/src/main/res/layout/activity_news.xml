@@ -8,8 +8,8 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -65,11 +65,11 @@
             android:layout_weight="4"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="5dp"
-                android:text="Favorite" />
+            <ImageButton
+                android:id="@+id/button_make_favorite"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/star_off" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
