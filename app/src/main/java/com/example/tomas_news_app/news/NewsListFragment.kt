@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tomas_news_app.R
-import com.example.tomas_news_app.article.Article
 import com.example.tomas_news_app.main.MainActivity
 import com.example.tomas_news_app.source.SourceItem
 import kotlinx.android.synthetic.main.fragment_news_list.*
@@ -32,7 +31,8 @@ class NewsListFragment() : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_news_list, container, false)
@@ -64,8 +64,7 @@ class NewsListFragment() : Fragment() {
 
 
     private fun onNewSelected(article: NewsItem) {
-        Log.d("TEST2", "${article!!}")
-        //(requireActivity() as MainActivity).showArticle(article)
+        (requireActivity() as MainActivity).showArticle(article)
     }
 
 

@@ -7,8 +7,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.tomas_news_app.R
 import com.example.tomas_news_app.about.AboutFragment
-import com.example.tomas_news_app.article.Article
 import com.example.tomas_news_app.article.ArticleFragment
+import com.example.tomas_news_app.news.NewsItem
 import com.example.tomas_news_app.news.NewsListFragment
 import com.example.tomas_news_app.source.SourceItem
 import com.example.tomas_news_app.source.SourceListFragment
@@ -61,15 +61,10 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    fun showArticle(article: Article) {
-        supportFragmentManager
-            .beginTransaction()
+    fun showArticle(article: NewsItem) {
+        supportFragmentManager.beginTransaction()
             .addToBackStack(null)
-            .replace(
-                R.id.container,
-                ArticleFragment.newInstance(
-                    article
-                )
+            .replace(R.id.container, ArticleFragment.newInstance(article)
             )
             .commit()
     }

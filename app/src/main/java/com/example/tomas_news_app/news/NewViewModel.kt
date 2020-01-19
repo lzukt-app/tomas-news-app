@@ -38,7 +38,7 @@ class NewViewModel(
                     //Log.d("TEST2", "${response.body()!!.articles!!}")
                     response.body()!!.articles!!
                         .map {
-                            NewsItem(it.urlToImage, it.title, it.description, it.publishedAt)
+                            NewsItem(it.author, it.title, it.description, it.url, it.urlToImage, it.publishedAt)
                         }
                         .let { _data.postValue(it) }
                 }
@@ -79,7 +79,7 @@ class NewViewModel(
                     //Log.d("TEST2", "${response.body()!!.articles!!}")
                     response.body()!!.articles
                         ?.map {
-                            NewsItem(it.urlToImage, it.title, it.description, it.publishedAt)
+                            NewsItem(it.author, it.title, it.description, it.url, it.urlToImage, it.publishedAt)
                         }
                         .let { _data.postValue(it) }
                 }
@@ -105,7 +105,7 @@ class NewViewModel(
                     //Log.d("TEST2", "${response.body()!!.articles!!}")
                     response.body()!!.articles
                         ?.map {
-                            NewsItem(it.urlToImage, it.title, it.description, it.publishedAt)
+                            NewsItem(it.author, it.title, it.description, it.url, it.urlToImage, it.publishedAt)
                         }
                         .let { _data.postValue(it) }
                 }
