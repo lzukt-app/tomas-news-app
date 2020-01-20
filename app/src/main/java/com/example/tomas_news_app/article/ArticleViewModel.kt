@@ -7,7 +7,7 @@ import com.example.tomas_news_app.news.NewsItem
 import com.example.tomas_news_app.news.NewsService
 
 class ArticleViewModel(
-    private val service: NewsService,
+    //private val service: NewsService,
     private val article: NewsItem?
 
 ) : ViewModel() {
@@ -16,7 +16,7 @@ class ArticleViewModel(
     val data: LiveData<NewsItem> get() = _data
 
     init {
-        //_data.postValue(it)
+        _data.postValue(article)
     }
 
 }

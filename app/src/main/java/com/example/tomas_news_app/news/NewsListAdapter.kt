@@ -53,7 +53,7 @@ class NewsListAdapter(
             Glide.with(itemView).load(source.urlToImage).into(itemView.imageUrl)
             itemView.title.text = source.title
             itemView.description.text = source.description
-            itemView.datetime.text = reFormatDate(source.publishedAt)
+            itemView.datetime.text = reFormatDate(source.publishedAt, "yyyy-MM-dd HH:mm:ss")
 
             itemView.setOnClickListener {
                 onSelected.invoke(source)

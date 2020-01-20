@@ -3,7 +3,6 @@ package com.example.tomas_news_app.article
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.tomas_news_app.R
 import com.example.tomas_news_app.news.NewsItem
-import kotlinx.android.synthetic.main.fragment_article.*
+import com.example.tomas_news_app.news.NewsListFragment
+import com.example.tomas_news_app.utils.reFormatDate
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_article.view.*
 
-class ArticleFragment() : Fragment() {
-    lateinit var article: NewsItem
+class ArticleFragment : Fragment() {
     lateinit var viewModel: ArticleViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,19 +40,20 @@ class ArticleFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //requireActivity().toolbar.visibility = View.GONE
+
         viewModel.data.observe(this, Observer { newData ->
-            Log.d("TEST2", "bbbb ${view!!}")
-            view.article_description.text = "kkkkk"
-            //article_title.text = (newData as NewsItem).title
-            //article_description.text = newData.description
-            //article_author.text = newData.author
-            //article_date.text = newData.publishedAt
-            /*article_readFull.setOnClickListener {
+            view.article_title.text = (newData as NewsItem).title
+            view.article_description.text = newData.description
+            view.article_author.text = newData.author
+            view.article_date.text = reFormatDate(newData.publishedAt, "yyyy-MM-dd")
+            view.article_readFull.setOnClickListener {
                 val uri: Uri =
                     Uri.parse(newData.url) // missing 'http://' will cause crashed
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
-            }*/
+            }
         })
     }
 
@@ -65,8 +66,7 @@ class ArticleFragment() : Fragment() {
         ): ArticleFragment {
             val arguments = Bundle()
             arguments.putParcelable(KEY_ARTICLE, article)
-            val fragment =
-                ArticleFragment()
+            val fragment = ArticleFragment()
             fragment.arguments = arguments
             return fragment
         }

@@ -15,19 +15,7 @@ class ArticleViewModelFactory(private val application: Application, private val 
         application
     ) {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        val client = OkHttpClient.Builder()
-            .addNetworkInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
-            .build()
-        val retrofit = Retrofit.Builder()
-            .client(client)
-            .baseUrl("https://newsapi.org")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
 
-        val service = retrofit.create(NewsService::class.java)
-
-        return ArticleViewModel(service, article) as T
+        return ArticleViewModel(article) as T
     }
 }
