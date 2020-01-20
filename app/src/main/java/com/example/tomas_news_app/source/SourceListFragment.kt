@@ -1,6 +1,7 @@
 package com.example.tomas_news_app.source
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +50,10 @@ class SourceListFragment() : Fragment() {
         toolbar.setOnClickListener {
             viewModel.sortSourceList()
         }
+
+//        swipeRefresh.setOnRefreshListener {
+//            Log.d("TEST2", "Refresh")
+//        }
     }
 
     private fun onSourceSelected(source: SourceItem) {
