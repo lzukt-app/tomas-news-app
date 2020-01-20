@@ -4,13 +4,11 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.tomas_news_app.news.NewsItem
-import com.example.tomas_news_app.news.NewsService
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class ArticleViewModelFactory(private val application: Application, private val article: NewsItem?) :
+class ArticleViewModelFactory(
+    private val application: Application,
+    private val article: NewsItem?
+) :
     ViewModelProvider.AndroidViewModelFactory(
         application
     ) {

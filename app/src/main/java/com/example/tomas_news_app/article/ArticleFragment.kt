@@ -11,9 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.tomas_news_app.R
 import com.example.tomas_news_app.news.NewsItem
-import com.example.tomas_news_app.news.NewsListFragment
 import com.example.tomas_news_app.utils.reFormatDate
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_article.view.*
 
 class ArticleFragment : Fragment() {

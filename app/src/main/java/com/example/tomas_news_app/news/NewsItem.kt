@@ -2,14 +2,9 @@ package com.example.tomas_news_app.news
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
 @Parcelize
-data class NewsItem (
-    //val urlToImage: String?,
-    //val title: String?,
-    //val description: String?,
-    //val datetime: String
+data class NewsItem(
     val author: String?,
     val title: String?,
     val description: String?,

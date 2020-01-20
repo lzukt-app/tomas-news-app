@@ -1,7 +1,6 @@
 package com.example.tomas_news_app.news
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,8 @@ import com.example.tomas_news_app.R
 import com.example.tomas_news_app.main.MainActivity
 import com.example.tomas_news_app.source.SourceItem
 import kotlinx.android.synthetic.main.fragment_news_list.*
+import kotlinx.android.synthetic.main.fragment_news_list.toolbar
+import kotlinx.android.synthetic.main.fragment_source_list.*
 import kotlinx.android.synthetic.main.fragment_source_list.recycler
 
 class NewsListFragment() : Fragment() {
@@ -41,7 +42,10 @@ class NewsListFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler.layoutManager = LinearLayoutManager(requireContext())
-        requireActivity().title = arguments!!.getString(KEY_SOURCE_TITLE)
+
+        (requireActivity() as MainActivity).setSupportActionBar(toolbar)
+        (requireActivity() as MainActivity).actionBar?.setDisplayHomeAsUpEnabled(true)
+        (requireActivity() as MainActivity).title = arguments!!.getString(KEY_SOURCE_TITLE)
 
         val adapter = NewsListAdapter(::onNewSelected)
         recycler.adapter = adapter

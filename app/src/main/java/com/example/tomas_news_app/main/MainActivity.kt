@@ -37,9 +37,9 @@ class MainActivity : AppCompatActivity() {
             this.showSource()
         }
 
-        setSupportActionBar(toolbar)
-        actionBar?.setDisplayShowHomeEnabled(true)
-        title = "@string/app_name"
+//        setSupportActionBar(toolbar)
+//        actionBar?.setDisplayShowHomeEnabled(true)
+//        title = "@string/app_name"
 
         //this.showAbout()
     }

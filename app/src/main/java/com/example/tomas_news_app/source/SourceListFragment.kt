@@ -35,7 +35,10 @@ class SourceListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler.layoutManager = LinearLayoutManager(requireContext())
-        requireActivity().title = getString(R.string.toolbar_title_source_list)
+
+        (requireActivity() as MainActivity).setSupportActionBar(toolbar)
+        (requireActivity() as MainActivity).actionBar?.setDisplayHomeAsUpEnabled(true)
+        (requireActivity() as MainActivity).title = getString(R.string.toolbar_title_source_list)
 
         val adapter = SourceListAdapter(::onSourceSelected)
         recycler.adapter = adapter
