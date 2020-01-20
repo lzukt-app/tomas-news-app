@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.example.tomas_news_app.R
 import com.example.tomas_news_app.news.NewsItem
 import com.example.tomas_news_app.utils.reFormatDate
+import kotlinx.android.synthetic.main.activity_news.view.*
 import kotlinx.android.synthetic.main.fragment_article.view.*
 
 class ArticleFragment : Fragment() {
@@ -42,7 +44,9 @@ class ArticleFragment : Fragment() {
         //requireActivity().toolbar.visibility = View.GONE
 
         viewModel.data.observe(this, Observer { newData ->
-            view.article_title.text = (newData as NewsItem).title
+             Glide.with(view).load((newData as NewsItem).urlToImage)//.placeholder(R.drawable.loading)
+                .into(view.article_imageUrl)
+            view.article_title.text = newData.title
             view.article_description.text = newData.description
             view.article_author.text = newData.author
             view.article_date.text = reFormatDate(newData.publishedAt, "yyyy-MM-dd")

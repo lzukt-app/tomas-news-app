@@ -19,7 +19,4 @@ class MainViewModel constructor(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
 }

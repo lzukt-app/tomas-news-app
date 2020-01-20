@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.tomas_news_app.news.NewsItem
 
 class ArticleViewModel(
-    //private val service: NewsService,
-    private val article: NewsItem?
+    article: NewsItem?
 
 ) : ViewModel() {
 

@@ -12,7 +12,7 @@ import com.example.tomas_news_app.R
 import com.example.tomas_news_app.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_source_list.*
 
-class SourceListFragment : Fragment() {
+class SourceListFragment() : Fragment() {
     lateinit var viewModel: SourceViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +45,10 @@ class SourceListFragment : Fragment() {
         viewModel.data.observe(this, Observer { newData ->
             adapter.setItems(newData)
         })
+
+        toolbar.setOnClickListener {
+            viewModel.sortSourceList()
+        }
     }
 
     private fun onSourceSelected(source: SourceItem) {
@@ -52,7 +56,11 @@ class SourceListFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() =
-            SourceListFragment()
+        fun newInstance(): SourceListFragment {
+            val arguments = Bundle()
+            val fragment = SourceListFragment()
+            fragment.arguments = arguments
+            return fragment
+        }
     }
 }

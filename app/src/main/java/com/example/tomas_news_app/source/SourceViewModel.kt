@@ -26,9 +26,21 @@ class SourceViewModel(
             ) {
                 response.body()!!.sources
                     .map { SourceItem(it.id, it.name, it.description) }
-                    .let { _data.postValue(it) }
+                    .let { _data.postValue(it.sortedBy(SourceItem::title)) }
             }
 
         })
+    }
+
+    private var sort = false
+
+    fun sortSourceList() {
+        sort = !sort
+        _data.postValue(
+            when (sort) {
+                false -> _data.value?.sortedBy { it.title }
+                else -> _data.value?.sortedByDescending { it.title }
+            }
+        )
     }
 }

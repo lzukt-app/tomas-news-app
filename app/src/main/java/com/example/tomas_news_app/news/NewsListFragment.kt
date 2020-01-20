@@ -66,14 +66,11 @@ class NewsListFragment() : Fragment() {
         }
     }
 
-
     private fun onNewSelected(article: NewsItem) {
         (requireActivity() as MainActivity).showArticle(article)
     }
 
-
     companion object {
-
         private const val KEY_SOURCE_TITLE = "key_source_title"
         private const val KEY_SOURCE_ID = "key_source_id"
 

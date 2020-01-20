@@ -13,7 +13,6 @@ import com.example.tomas_news_app.news.NewsListFragment
 import com.example.tomas_news_app.source.SourceItem
 import com.example.tomas_news_app.source.SourceListFragment
 import com.example.tomas_news_app.tutorial.TutorialActivity
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
         viewModel = ViewModelProviders.of(
             this,
@@ -36,10 +34,6 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             this.showSource()
         }
-
-//        setSupportActionBar(toolbar)
-//        actionBar?.setDisplayShowHomeEnabled(true)
-//        title = "@string/app_name"
 
         //this.showAbout()
     }
@@ -64,7 +58,8 @@ class MainActivity : AppCompatActivity() {
     fun showArticle(article: NewsItem) {
         supportFragmentManager.beginTransaction()
             .addToBackStack(null)
-            .replace(R.id.container, ArticleFragment.newInstance(article)
+            .replace(
+                R.id.container, ArticleFragment.newInstance(article)
             )
             .commit()
     }
