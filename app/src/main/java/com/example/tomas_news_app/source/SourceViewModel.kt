@@ -38,8 +38,8 @@ class SourceViewModel(
         sort = !sort
         _data.postValue(
             when (sort) {
-                false -> _data.value?.sortedBy { it.title }
-                else -> _data.value?.sortedByDescending { it.title }
+                false ->  (_data.value ?: listOf()).sortedBy { it.title }
+                else -> (_data.value ?: listOf()).sortedByDescending { it.title }
             }
         )
     }
