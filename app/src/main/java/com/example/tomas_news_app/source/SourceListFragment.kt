@@ -52,8 +52,8 @@ class SourceListFragment() : Fragment() {
         toolbar.setOnClickListener {
             viewModel.sortSourceList()
         }
-        val handler = Handler() //this line need to be executed on main thread
 
+        val handler = Handler() //this line need to be executed on main thread
         thread {
             //io-thread
             handler.post {

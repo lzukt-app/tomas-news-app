@@ -13,7 +13,7 @@ interface SourceDao {
 
     @Query(
         """
-        SELECT * FROM SourceEntity ORDER BY id DESC
+        SELECT * FROM SourceEntity ORDER BY id ASC
     """
     )
     fun query(): List<SourceEntity>
