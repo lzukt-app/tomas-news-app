@@ -8,13 +8,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class SourceViewModel(
-    service: SourceService
+    private val service: SourceService
 
 ) : ViewModel() {
     private val _data = MutableLiveData<List<SourceItem>>()
     val data: LiveData<List<SourceItem>> get() = _data
 
-    init {
+    fun onCreate() {
         service.getSources().enqueue(object : Callback<SourceListResponse> {
             override fun onFailure(call: Call<SourceListResponse>, t: Throwable) {
                 t.printStackTrace()

@@ -17,6 +17,7 @@ import com.example.tomas_news_app.tutorial.TutorialActivity
 class MainActivity : AppCompatActivity() {
 
     lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

@@ -27,7 +27,7 @@ class SourceViewModelFactory(private val application: Application) :
 
         val service = retrofit.create(SourceService::class.java)
 
-        return SourceViewModel(service) as T
+        return SourceViewModel(service).apply { onCreate() } as T
     }
 
 }

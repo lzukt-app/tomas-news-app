@@ -18,7 +18,11 @@ class NewViewModel(
     private val _data = MutableLiveData<List<NewsItem>>()
     val data: LiveData<List<NewsItem>> get() = _data
 
-    init {
+//    init {
+//        this.onPopularTodayArticlesSelected()
+//    }
+
+    fun onCreate() {
         this.onPopularTodayArticlesSelected()
     }
 

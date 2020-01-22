@@ -6,15 +6,14 @@ import androidx.lifecycle.ViewModel
 import com.example.tomas_news_app.news.NewsItem
 
 class ArticleViewModel(
-    article: NewsItem?
+    private val article: NewsItem?
 
 ) : ViewModel() {
 
     private val _data = MutableLiveData<NewsItem>()
     val data: LiveData<NewsItem> get() = _data
 
-    init {
+    fun onCreate() {
         _data.postValue(article)
     }
-
 }

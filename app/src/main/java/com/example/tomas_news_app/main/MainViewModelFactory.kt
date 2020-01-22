@@ -16,7 +16,7 @@ class MainViewModelFactory(private val application: Application) :
                 BuildConfig.APPLICATION_ID,
                 Context.MODE_PRIVATE
             )
-        ) as T
+        ).apply { onCreate() } as T
     }
 
 }

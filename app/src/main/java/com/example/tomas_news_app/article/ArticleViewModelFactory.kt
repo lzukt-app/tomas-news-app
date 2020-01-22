@@ -14,6 +14,6 @@ class ArticleViewModelFactory(
     ) {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
-        return ArticleViewModel(article) as T
+        return ArticleViewModel(article).apply { onCreate() } as T
     }
 }

@@ -27,7 +27,7 @@ class NewViewModelFactory(private val application: Application, private val sour
 
         val service = retrofit.create(NewsService::class.java)
 
-        return NewViewModel(service, sourceId) as T
+        return NewViewModel(service, sourceId).apply { onCreate() } as T
     }
 
 }

@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.example.tomas_news_app.utils.SingleLiveData
 
 class MainViewModel constructor(
-    preferences: SharedPreferences
+    private val preferences: SharedPreferences
 ) : ViewModel() {
 
     private val _showTutorial = SingleLiveData<Unit>()
     val showTutorial: LiveData<Unit> get() = _showTutorial
 
-    init {
+    fun onCreate(){
         if (!preferences.getBoolean("tutorial_is_shown", false)) {
             _showTutorial.postValue(Unit)
             preferences.edit().putBoolean("tutorial_is_shown", true).apply()
