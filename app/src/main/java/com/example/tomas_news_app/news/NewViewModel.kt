@@ -15,7 +15,8 @@ import kotlin.concurrent.thread
 class NewViewModel(
     private val service: NewsService,
     private val sourceId: String,
-    private val articleDao: ArticleDao
+    private val articleDao: ArticleDao,
+    private var last_chipId: Int = 1
 
 ) : ViewModel() {
     private val _data = MutableLiveData<List<NewsItem>>()
@@ -26,7 +27,8 @@ class NewViewModel(
     }
 
     fun onPopularTodayArticlesSelected() {
-        getArticlesFromDB(1)
+        last_chipId = 1
+        getArticlesFromDB(last_chipId)
         service
             .getTopNewsFromSource(sourceId)
             .enqueue(object : Callback<NewsListResponse> {
@@ -38,30 +40,14 @@ class NewViewModel(
                     call: Call<NewsListResponse>,
                     response: Response<NewsListResponse>
                 ) {
-                    updateArticleData(response,1)
+                    updateArticleData(response, last_chipId)
                 }
             })
     }
 
-    private fun getArticlesFromDB(chipId: Int) {
-        thread {
-            articleDao.query(sourceId, chipId)
-                .map {
-                    NewsItem(
-                        it.author,
-                        it.title,
-                        it.description,
-                        it.url,
-                        it.urlToImage,
-                        it.publishedAt
-                    )
-                }
-                .let { _data.postValue(it) }
-        }
-    }
-
     fun onAllTimeArticlesSelected() {
-        getArticlesFromDB(2)
+        last_chipId = 2
+        getArticlesFromDB(last_chipId)
         service
             .getPopularTodayFromSource(
                 sourceId,
@@ -91,13 +77,14 @@ class NewViewModel(
                     call: Call<NewsListResponse>,
                     response: Response<NewsListResponse>
                 ) {
-                    updateArticleData(response, 2)
+                    updateArticleData(response, last_chipId)
                 }
             })
     }
 
     fun onNewestArticlesSelected() {
-        getArticlesFromDB(3)
+        last_chipId = 3
+        getArticlesFromDB(last_chipId)
         service
             .getNewestFromSource(
                 sourceId,
@@ -112,9 +99,27 @@ class NewViewModel(
                     call: Call<NewsListResponse>,
                     response: Response<NewsListResponse>
                 ) {
-                    updateArticleData(response, 3)
+                    updateArticleData(response, last_chipId)
                 }
             })
+    }
+
+    private fun getArticlesFromDB(chipId: Int) {
+        thread {
+            articleDao.query(sourceId, chipId)
+                .map {
+                    NewsItem(
+                        it.author,
+                        it.title,
+                        it.description,
+                        it.url,
+                        it.urlToImage,
+                        it.publishedAt,
+                        it.favorite
+                    )
+                }
+                .let { _data.postValue(it) }
+        }
     }
 
     private fun updateArticleData(response: Response<NewsListResponse>, chipId: Int) {
@@ -127,7 +132,8 @@ class NewViewModel(
                         it.description,
                         it.url,
                         it.urlToImage,
-                        it.publishedAt
+                        it.publishedAt,
+                        it.favorite
                     )
                 }
                 .map {
@@ -139,9 +145,11 @@ class NewViewModel(
                         description = it.description,
                         url = it.url,
                         urlToImage = it.urlToImage,
-                        publishedAt = it.publishedAt
+                        publishedAt = it.publishedAt,
+                        favorite = it.favorite
                     )
                 }
+                .also { articleDao.deleteAll(sourceId, chipId) }
                 .also { articleDao.insert(it) }
                 .let { articleDao.query(sourceId, chipId) }
                 .map {
@@ -151,35 +159,18 @@ class NewViewModel(
                         it.description,
                         it.url,
                         it.urlToImage,
-                        it.publishedAt
+                        it.publishedAt,
+                        it.favorite
                     )
                 }
                 .let { _data.postValue(it) }
         }
     }
 
-
-//    private fun getArticles(chipId: Int) {
-//        thread {
-//            postArticleList(
-//                articleDao.get(
-//                    chipId,
-//                    sourceId
-//                ).map {
-//                    NewsItem(
-//                        it.author,
-//                        it.title,
-//                        it.description,
-//                        it.url,
-//                        it.urlToImage,
-//                        it.publishedAt
-//                    )
-//                }
-//            )
-//        }
-//    }
-//
-//    private fun postArticleList(listArticle: List<NewsItem>) {
-//        _data.postValue(listArticle)
-//    }
+    fun changeArticleFavoriteStatus(article: NewsItem) {
+        thread {
+            articleDao.changeFavoriteStatus(article.url)
+            getArticlesFromDB(last_chipId)
+        }
+    }
 }

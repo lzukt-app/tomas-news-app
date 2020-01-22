@@ -14,7 +14,8 @@ data class ArticleResponse(
     val url: String,
     val urlToImage: String,
     val publishedAt: String,
-    val content: String?
+    val content: String?,
+    val favorite: Boolean
 )
 
 data class ArticleSourceResponse(

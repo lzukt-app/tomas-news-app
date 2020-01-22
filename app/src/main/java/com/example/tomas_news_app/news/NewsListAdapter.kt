@@ -12,7 +12,9 @@ import kotlinx.android.synthetic.main.activity_source.view.description
 import kotlinx.android.synthetic.main.activity_source.view.title
 
 class NewsListAdapter(
-    val onSelected: (NewsItem) -> Unit
+    val onSelected: (NewsItem) -> Unit,
+    val onFavorite: (NewsItem) -> Unit
+
 ) : RecyclerView.Adapter<NewsListAdapter.ViewHolder>() {
 
     private val list = mutableListOf<NewsItem>()
@@ -55,9 +57,19 @@ class NewsListAdapter(
             itemView.title.text = source.title
             itemView.description.text = source.description
             itemView.datetime.text = reFormatDate(source.publishedAt, "yyyy-MM-dd HH:mm:ss")
-
+            itemView.button_make_favorite.apply {
+                if (source.favorite) {
+                    setBackgroundResource(R.drawable.star)
+                } else {
+                    setBackgroundResource(R.drawable.star_off)
+                }
+            }
             itemView.setOnClickListener {
                 onSelected.invoke(source)
+            }
+
+            itemView.button_make_favorite.setOnClickListener {
+                onFavorite(source)
             }
         }
     }

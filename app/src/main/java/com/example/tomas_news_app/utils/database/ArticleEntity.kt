@@ -4,14 +4,14 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class ArticleEntity (
-    @PrimaryKey(autoGenerate = true) val id: Int? = null,
+data class ArticleEntity(
     val chipId: Int,
     val sourceId: String,
     val author: String?,
     val title: String?,
     val description: String?,
-    val url: String,
+    @PrimaryKey(autoGenerate = false) val url: String,
     val urlToImage: String?,
-    val publishedAt: String
+    val publishedAt: String,
+    val favorite: Boolean
 )

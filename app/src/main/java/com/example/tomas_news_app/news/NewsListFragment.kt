@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -47,7 +48,8 @@ class NewsListFragment() : Fragment() {
         (requireActivity() as MainActivity).actionBar?.setDisplayHomeAsUpEnabled(true)
         (requireActivity() as MainActivity).title = arguments!!.getString(KEY_SOURCE_TITLE)
 
-        val adapter = NewsListAdapter(::onNewSelected)
+        val adapter = NewsListAdapter(::onNewSelected, ::onMakeArticleFavorite)
+
         recycler.adapter = adapter
         viewModel.data.observe(this, Observer { newData ->
             adapter.setItems(newData)
@@ -68,6 +70,13 @@ class NewsListFragment() : Fragment() {
 
     private fun onNewSelected(article: NewsItem) {
         (requireActivity() as MainActivity).showArticle(article)
+    }
+
+    private fun onMakeArticleFavorite(article: NewsItem) {
+        viewModel.changeArticleFavoriteStatus(
+            article
+        )
+        Toast.makeText(this.context, "Favorite", Toast.LENGTH_SHORT).show()
     }
 
     companion object {
