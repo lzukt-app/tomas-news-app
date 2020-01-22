@@ -3,6 +3,7 @@ package com.example.tomas_news_app.news
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.tomas_news_app.utils.database.NewsDatabase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -27,7 +28,11 @@ class NewViewModelFactory(private val application: Application, private val sour
 
         val service = retrofit.create(NewsService::class.java)
 
-        return NewViewModel(service, sourceId).apply { onCreate() } as T
+        return NewViewModel(
+            service,
+            sourceId,
+            NewsDatabase.getInstance(application).articleDao
+        ).apply { onCreate() } as T
     }
 
 }

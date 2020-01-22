@@ -1,6 +1,7 @@
 package com.example.tomas_news_app.source
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tomas_news_app.R
 import com.example.tomas_news_app.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_source_list.*
+import kotlin.concurrent.thread
 
 class SourceListFragment() : Fragment() {
     lateinit var viewModel: SourceViewModel
@@ -49,6 +51,14 @@ class SourceListFragment() : Fragment() {
 
         toolbar.setOnClickListener {
             viewModel.sortSourceList()
+        }
+
+        val handler = Handler() //this line need to be executed on main thread
+        thread {
+            //io-thread
+            handler.post {
+                //main-thread
+            }
         }
 
 //        swipeRefresh.setOnRefreshListener {
