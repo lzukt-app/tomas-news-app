@@ -1,6 +1,5 @@
 package com.example.tomas_news_app.news
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,7 +26,6 @@ class NewViewModel(
     }
 
     fun onPopularTodayArticlesSelected() {
-        //Log.d("TEST2", "${sourceId!!}")
         service
             .getTopNewsFromSource(sourceId)
             .enqueue(object : Callback<NewsListResponse> {
@@ -39,7 +37,7 @@ class NewViewModel(
                     call: Call<NewsListResponse>,
                     response: Response<NewsListResponse>
                 ) {
-                    //Log.d("TEST2", "${response.body()!!.articles!!}")
+                    //Log.d("TEST2", "${response.body()!!.articles!!.size}")
                     response.body()!!.articles!!
                         .map {
                             NewsItem(
@@ -57,7 +55,6 @@ class NewViewModel(
     }
 
     fun onAllTimeArticlesSelected() {
-        //Log.d("TEST2", "${sourceId!!}")
         service
             .getPopularTodayFromSource(
                 sourceId,
@@ -87,7 +84,6 @@ class NewViewModel(
                     call: Call<NewsListResponse>,
                     response: Response<NewsListResponse>
                 ) {
-                    //Log.d("TEST2", "${response.body()!!.articles!!}")
                     response.body()!!.articles
                         ?.map {
                             NewsItem(
@@ -105,7 +101,6 @@ class NewViewModel(
     }
 
     fun onNewestArticlesSelected() {
-        //Log.d("TEST2", "${sourceId!!}")
         service
             .getNewestFromSource(
                 sourceId,
@@ -120,7 +115,6 @@ class NewViewModel(
                     call: Call<NewsListResponse>,
                     response: Response<NewsListResponse>
                 ) {
-                    //Log.d("TEST2", "${response.body()!!.articles!!}")
                     response.body()!!.articles
                         ?.map {
                             NewsItem(
