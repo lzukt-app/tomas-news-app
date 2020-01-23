@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.tomas_news_app.R
 import com.example.tomas_news_app.about.AboutFragment
 import com.example.tomas_news_app.article.ArticleFragment
+import com.example.tomas_news_app.favorite.FavoriteFragment
 import com.example.tomas_news_app.news.NewsItem
 import com.example.tomas_news_app.news.NewsListFragment
 import com.example.tomas_news_app.source.SourceItem
@@ -33,10 +34,11 @@ class MainActivity : AppCompatActivity() {
         })
 
         if (savedInstanceState == null) {
+            //this.showAbout()
+            //this.showFavorite()
             this.showSource()
         }
 
-        //this.showAbout()
     }
 
     private fun showTutorial() {
@@ -62,6 +64,13 @@ class MainActivity : AppCompatActivity() {
             .replace(
                 R.id.container, ArticleFragment.newInstance(article)
             )
+            .commit()
+    }
+
+    fun showFavorite() {
+        supportFragmentManager.beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.container, FavoriteFragment.newInstance())
             .commit()
     }
 

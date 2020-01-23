@@ -1,37 +1,38 @@
-package com.example.tomas_news_app.source
+package com.example.tomas_news_app.favorite
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tomas_news_app.R
 import com.example.tomas_news_app.main.MainActivity
-import kotlinx.android.synthetic.main.fragment_source_list.*
-import kotlin.concurrent.thread
+import com.example.tomas_news_app.news.NewsItem
+import kotlinx.android.synthetic.main.fragment_favorite.*
 
-class SourceListFragment() : Fragment() {
-    lateinit var viewModel: SourceViewModel
+
+class FavoriteFragment : Fragment() {
+    private lateinit var viewModel: FavoriteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProviders.of(
             this,
-            SourceViewModelFactory(requireActivity().application)
+            FavoriteViewModelFactory(requireActivity().application)
         )
-            .get(SourceViewModel::class.java)
+            .get(FavoriteViewModel::class.java)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_source_list, container, false)
+        return inflater.inflate(R.layout.fragment_favorite, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,41 +41,34 @@ class SourceListFragment() : Fragment() {
 
         (requireActivity() as MainActivity).setSupportActionBar(toolbar)
         (requireActivity() as MainActivity).actionBar?.setDisplayHomeAsUpEnabled(true)
-        (requireActivity() as MainActivity).title = getString(R.string.toolbar_title_source_list)
+        (requireActivity() as MainActivity).title = "Favorites"
 
-        val adapter = SourceListAdapter(::onSourceSelected)
+        val adapter = FavoriteAdapter(::onNewSelected, ::onMakeArticleFavorite)
+
         recycler.adapter = adapter
         viewModel.data.observe(this, Observer { newData ->
             adapter.setItems(newData)
         })
-
-        toolbar.setOnClickListener {
-            viewModel.sortSourceList()
-        }
-
-        val handler = Handler() //this line need to be executed on main thread
-        thread {
-            //io-thread
-            handler.post {
-                //main-thread
-            }
-        }
-
-//        swipeRefresh.setOnRefreshListener {
-//            Log.d("TEST2", "Refresh")
-//        }
     }
 
-    private fun onSourceSelected(source: SourceItem) {
-        (requireActivity() as MainActivity).showNews(source)
+    private fun onNewSelected(article: NewsItem) {
+        (requireActivity() as MainActivity).showArticle(article)
+    }
+
+    private fun onMakeArticleFavorite(article: NewsItem) {
+        viewModel.changeArticleFavoriteStatus(
+            article
+        )
+        Toast.makeText(this.context, "Removed from Favorites", Toast.LENGTH_SHORT).show()
     }
 
     companion object {
-        fun newInstance(): SourceListFragment {
+        fun newInstance(): FavoriteFragment {
             val arguments = Bundle()
-            val fragment = SourceListFragment()
+            val fragment = FavoriteFragment()
             fragment.arguments = arguments
             return fragment
         }
     }
+
 }

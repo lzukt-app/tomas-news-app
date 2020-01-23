@@ -55,6 +55,10 @@ class NewsListFragment() : Fragment() {
             adapter.setItems(newData)
         })
 
+        toolbar.setOnClickListener {
+            (requireActivity() as MainActivity).showFavorite()
+        }
+
         chip_popular_today.setOnClickListener {
             viewModel.onPopularTodayArticlesSelected()
         }
@@ -76,7 +80,7 @@ class NewsListFragment() : Fragment() {
         viewModel.changeArticleFavoriteStatus(
             article
         )
-        Toast.makeText(this.context, "Favorite", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this.context, "Favorite", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

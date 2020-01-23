@@ -32,4 +32,11 @@ interface ArticleDao {
     )
     fun deleteAll(sourceId: String, chipId: Int)
 
+    @Query(
+        value = """
+                SELECT * FROM ArticleEntity WHERE favorite
+            """
+    )
+    fun getFavorite(): List<ArticleEntity>
+
 }
