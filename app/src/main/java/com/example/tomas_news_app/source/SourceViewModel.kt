@@ -15,14 +15,27 @@ class SourceViewModel(
     private val sourceDao: SourceDao
 
 ) : ViewModel() {
+
+    var _sortid = MutableLiveData(true)
+    val sortid: LiveData<Boolean> get() = _sortid
+
     private val _data = MutableLiveData<List<SourceItem>>()
     val data: LiveData<List<SourceItem>> get() = _data
 
     fun onCreate() {
         thread {
-            sourceDao.query()
-                .map { SourceItem(it.id, it.title, it.description) }
-                .let { _data.postValue(it) }
+            when (sortid.value) {
+                true -> {
+                    sourceDao.query()
+                        .map { SourceItem(it.id, it.title, it.description) }
+                        .let { _data.postValue(it) }
+                }
+                else -> {
+                    sourceDao.queryDESC()
+                        .map { SourceItem(it.id, it.title, it.description) }
+                        .let { _data.postValue(it) }
+                }
+            }
         }
         service
             .getSources()
@@ -40,22 +53,25 @@ class SourceViewModel(
                             .map { SourceItem(it.id, it.name, it.description) }
                             .map { SourceEntity(it.id, it.title, it.description) }
                             .also { sourceDao.insert(it) }
-                            .let { sourceDao.query() }
+                        when (_sortid.value) {
+                            true -> {
+                                this.let { sourceDao.query() }
+                            }
+                            else -> {
+                                this.let { sourceDao.queryDESC() }
+                            }
+                        }
                             .map { SourceItem(it.id, it.title, it.description) }
                             .let { _data.postValue(it) }
                     }
                 }
-
             })
     }
 
-    private var sort = false
-
     fun sortSourceList() {
-        sort = !sort
         _data.postValue(
-            when (sort) {
-                false -> (_data.value ?: listOf()).sortedBy { it.title }
+            when (sortid.value) {
+                true -> (_data.value ?: listOf()).sortedBy { it.title }
                 else -> (_data.value ?: listOf()).sortedByDescending { it.title }
             }
         )

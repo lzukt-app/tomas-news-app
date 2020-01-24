@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -13,9 +14,7 @@ import com.example.tomas_news_app.main.MainActivity
 import com.example.tomas_news_app.source.SourceItem
 import kotlinx.android.synthetic.main.fragment_news_list.*
 import kotlinx.android.synthetic.main.fragment_news_list.toolbar
-import kotlinx.android.synthetic.main.fragment_source_list.*
 import kotlinx.android.synthetic.main.fragment_source_list.recycler
-import com.example.tomas_news_app.news.NewViewModelFactory as NewViewModelFactory1
 
 class NewsListFragment() : Fragment() {
     lateinit var sourceId: String
@@ -27,7 +26,7 @@ class NewsListFragment() : Fragment() {
 
         viewModel = ViewModelProviders.of(
             this,
-            NewViewModelFactory1(requireActivity().application, sourceId)
+            NewViewModelFactory(requireActivity().application, sourceId)
         )
             .get(NewViewModel::class.java)
     }
@@ -42,7 +41,7 @@ class NewsListFragment() : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        when (viewModel.cid.value) {
+        when (viewModel.chipid.value) {
             1 -> {
                 viewModel.onPopularTodayArticlesSelected()
             }
@@ -71,15 +70,25 @@ class NewsListFragment() : Fragment() {
         })
 
         chip_popular_today.setOnClickListener {
-            viewModel.onPopularTodayArticlesSelected()
+            viewModel._chipid.value = 1
+            viewModel.onCreate()
         }
 
         chip_popular_all_time.setOnClickListener {
-            viewModel.onAllTimeArticlesSelected()
+            viewModel._chipid.value = 2
+            viewModel.onCreate()
         }
 
         chip_newest.setOnClickListener {
-            viewModel.onNewestArticlesSelected()
+            viewModel._chipid.value = 3
+            viewModel.onCreate()
+        }
+
+
+        swipe_refresh_news.setOnRefreshListener {
+            Toast.makeText(context, "Refresh News list", Toast.LENGTH_SHORT).show()
+            swipe_refresh_news.isRefreshing = false
+            viewModel.onCreate()
         }
     }
 
@@ -91,7 +100,7 @@ class NewsListFragment() : Fragment() {
         viewModel.changeArticleFavoriteStatus(
             article
         )
-        //Toast.makeText(this.context, "Favorite", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this.context, "Favorite", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

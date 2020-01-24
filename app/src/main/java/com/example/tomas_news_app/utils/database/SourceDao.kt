@@ -13,8 +13,15 @@ interface SourceDao {
 
     @Query(
         """
-        SELECT * FROM SourceEntity ORDER BY id ASC
+        SELECT * FROM SourceEntity ORDER BY title ASC
     """
     )
     fun query(): List<SourceEntity>
+
+    @Query(
+        """
+        SELECT * FROM SourceEntity ORDER BY title DESC
+    """
+    )
+    fun queryDESC(): List<SourceEntity>
 }

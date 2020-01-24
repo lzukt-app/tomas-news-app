@@ -5,6 +5,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -49,6 +50,14 @@ class SourceListFragment() : Fragment() {
         })
 
         toolbar.setOnClickListener {
+            when (viewModel.sortid.value) {
+                false -> {
+                    viewModel._sortid.value = true
+                }
+                else -> {
+                    viewModel._sortid.value = false
+                }
+            }
             viewModel.sortSourceList()
         }
 
@@ -60,9 +69,12 @@ class SourceListFragment() : Fragment() {
             }
         }
 
-//        swipeRefresh.setOnRefreshListener {
-//            Log.d("TEST2", "Refresh")
-//        }
+        swipe_refresh_source.setOnRefreshListener {
+            Toast.makeText(context, "Refresh Source list", Toast.LENGTH_SHORT).show()
+            swipe_refresh_source.isRefreshing = false
+            viewModel.onCreate()
+        }
+
     }
 
     private fun onSourceSelected(source: SourceItem) {

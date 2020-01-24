@@ -12,29 +12,35 @@ import retrofit2.Response
 import java.util.*
 import kotlin.concurrent.thread
 
-
 class NewViewModel(
     private val service: NewsService,
     private val sourceId: String,
-    private val articleDao: ArticleDao,
-    private var last_chipId: Int = 1
+    private val articleDao: ArticleDao//,
 
 ) : ViewModel() {
 
-    private var _cid = MutableLiveData(1)
-    val cid: LiveData<Int> get() = _cid
+    var _chipid = MutableLiveData(1)
+    val chipid: LiveData<Int> get() = _chipid
 
     private val _data = MutableLiveData<List<NewsItem>>()
     val data: LiveData<List<NewsItem>> get() = _data
 
     fun onCreate() {
-        this.onPopularTodayArticlesSelected()
+        when (chipid.value) {
+            1 -> {
+                this.onPopularTodayArticlesSelected()
+            }
+            2 -> {
+                this.onAllTimeArticlesSelected()
+            }
+            else -> {
+                this.onNewestArticlesSelected()
+            }
+        }
     }
 
     fun onPopularTodayArticlesSelected() {
-        last_chipId = 1
-        _cid.postValue(last_chipId)
-        getArticlesFromDB(last_chipId)
+        getArticlesFromDB(1)
         service
             .getTopNewsFromSource(sourceId)
             .enqueue(object : Callback<NewsListResponse> {
@@ -46,15 +52,13 @@ class NewViewModel(
                     call: Call<NewsListResponse>,
                     response: Response<NewsListResponse>
                 ) {
-                    updateArticleData(response, last_chipId)
+                    updateArticleData(response, 1)
                 }
             })
     }
 
     fun onAllTimeArticlesSelected() {
-        last_chipId = 2
-        _cid.postValue(last_chipId)
-        getArticlesFromDB(last_chipId)
+        getArticlesFromDB(2)
         service
             .getPopularTodayFromSource(
                 sourceId,
@@ -84,15 +88,13 @@ class NewViewModel(
                     call: Call<NewsListResponse>,
                     response: Response<NewsListResponse>
                 ) {
-                    updateArticleData(response, last_chipId)
+                    updateArticleData(response, 2)
                 }
             })
     }
 
     fun onNewestArticlesSelected() {
-        last_chipId = 3
-        _cid.postValue(last_chipId)
-        getArticlesFromDB(last_chipId)
+        getArticlesFromDB(3)
         service
             .getNewestFromSource(
                 sourceId,
@@ -107,7 +109,7 @@ class NewViewModel(
                     call: Call<NewsListResponse>,
                     response: Response<NewsListResponse>
                 ) {
-                    updateArticleData(response, last_chipId)
+                    updateArticleData(response, 3)
                 }
             })
     }
@@ -178,7 +180,7 @@ class NewViewModel(
     fun changeArticleFavoriteStatus(article: NewsItem) {
         thread {
             articleDao.changeFavoriteStatus(article.url)
-            getArticlesFromDB(last_chipId)
+            getArticlesFromDB(chipid.value!!)
         }
     }
 }

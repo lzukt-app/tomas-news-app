@@ -13,7 +13,7 @@ interface ArticleDao {
 
     @Query(
         value = """
-                SELECT * FROM ArticleEntity WHERE sourceId = :sourceId AND chipId = :chipId
+                SELECT * FROM ArticleEntity WHERE sourceId = :sourceId AND chipId = :chipId ORDER BY publishedAt DESC
             """
     )
     fun query(sourceId: String, chipId: Int): List<ArticleEntity>
