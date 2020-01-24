@@ -19,4 +19,8 @@
     <string name="popular_all_time">Popular All time</string>
     <string name="read_full_article_online">READ FULL ARTICLE ONLINE</string>
 
+    <string name="bottom_navigation_source">Source</string>
+    <string name="bottom_navigation_favorite">Favorite</string>
+    <string name="bottom_navigation_about">About</string>
+
 </resources>

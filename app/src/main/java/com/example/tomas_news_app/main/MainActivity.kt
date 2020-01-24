@@ -2,6 +2,7 @@ package com.example.tomas_news_app.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -14,6 +15,7 @@ import com.example.tomas_news_app.news.NewsListFragment
 import com.example.tomas_news_app.source.SourceItem
 import com.example.tomas_news_app.source.SourceListFragment
 import com.example.tomas_news_app.tutorial.TutorialActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +24,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        navView.setOnNavigationItemSelectedListener { onBottomNavigationEvent(it) }
 
         viewModel = ViewModelProviders.of(
             this,
@@ -34,11 +39,25 @@ class MainActivity : AppCompatActivity() {
         })
 
         if (savedInstanceState == null) {
-            //this.showAbout()
-            //this.showFavorite()
             this.showSource()
         }
+    }
 
+    private fun onBottomNavigationEvent(it: MenuItem): Boolean {
+        return when (it.itemId) {
+            R.id.bottom_navigation_source -> {
+                this.showSource()
+                true
+            }
+            R.id.bottom_navigation_favorite -> {
+                this.showFavorite()
+                true
+            }
+            else -> {
+                this.showAbout()
+                true
+            }
+        }
     }
 
     private fun showTutorial() {
@@ -76,6 +95,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showAbout() {
         supportFragmentManager.beginTransaction()
+            .addToBackStack(null)
             .replace(R.id.container, AboutFragment.newInstance())
             .commit()
     }
