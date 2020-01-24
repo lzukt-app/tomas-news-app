@@ -12,6 +12,7 @@ import retrofit2.Response
 import java.util.*
 import kotlin.concurrent.thread
 
+
 class NewViewModel(
     private val service: NewsService,
     private val sourceId: String,
@@ -19,6 +20,10 @@ class NewViewModel(
     private var last_chipId: Int = 1
 
 ) : ViewModel() {
+
+    private var _cid = MutableLiveData(1)
+    val cid: LiveData<Int> get() = _cid
+
     private val _data = MutableLiveData<List<NewsItem>>()
     val data: LiveData<List<NewsItem>> get() = _data
 
@@ -28,6 +33,7 @@ class NewViewModel(
 
     fun onPopularTodayArticlesSelected() {
         last_chipId = 1
+        _cid.postValue(last_chipId)
         getArticlesFromDB(last_chipId)
         service
             .getTopNewsFromSource(sourceId)
@@ -47,6 +53,7 @@ class NewViewModel(
 
     fun onAllTimeArticlesSelected() {
         last_chipId = 2
+        _cid.postValue(last_chipId)
         getArticlesFromDB(last_chipId)
         service
             .getPopularTodayFromSource(
@@ -84,6 +91,7 @@ class NewViewModel(
 
     fun onNewestArticlesSelected() {
         last_chipId = 3
+        _cid.postValue(last_chipId)
         getArticlesFromDB(last_chipId)
         service
             .getNewestFromSource(

@@ -1,6 +1,7 @@
 package com.example.tomas_news_app.news
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_news_list.*
 import kotlinx.android.synthetic.main.fragment_news_list.toolbar
 import kotlinx.android.synthetic.main.fragment_source_list.*
 import kotlinx.android.synthetic.main.fragment_source_list.recycler
+import com.example.tomas_news_app.news.NewViewModelFactory as NewViewModelFactory1
 
 class NewsListFragment() : Fragment() {
     lateinit var sourceId: String
@@ -27,7 +29,7 @@ class NewsListFragment() : Fragment() {
 
         viewModel = ViewModelProviders.of(
             this,
-            NewViewModelFactory(requireActivity().application, sourceId)
+            NewViewModelFactory1(requireActivity().application, sourceId)
         )
             .get(NewViewModel::class.java)
     }
@@ -38,6 +40,22 @@ class NewsListFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_news_list, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Log.d("TEST2", "id - ${viewModel.cid.value}")
+        when (viewModel.cid.value) {
+            1 -> {
+                viewModel.onPopularTodayArticlesSelected()
+            }
+            2 -> {
+                viewModel.onAllTimeArticlesSelected()
+            }
+            else -> {
+                viewModel.onNewestArticlesSelected()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
