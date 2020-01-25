@@ -13,8 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.tomas_news_app.R
 import com.example.tomas_news_app.news.NewsItem
 import com.example.tomas_news_app.utils.reFormatDate
-import kotlinx.android.synthetic.main.activity_news.view.*
-import kotlinx.android.synthetic.main.fragment_article.view.*
+import kotlinx.android.synthetic.main.activity_article.view.*
 
 class ArticleFragment : Fragment() {
     lateinit var viewModel: ArticleViewModel
@@ -44,7 +43,8 @@ class ArticleFragment : Fragment() {
         //requireActivity().toolbar.visibility = View.GONE
 
         viewModel.data.observe(this, Observer { newData ->
-             Glide.with(view).load((newData as NewsItem).urlToImage)//.placeholder(R.drawable.loading)
+            Glide.with(view)
+                .load((newData as NewsItem).urlToImage)//.placeholder(R.drawable.loading)
                 .into(view.article_imageUrl)
             view.article_title.text = newData.title
             view.article_description.text = newData.description

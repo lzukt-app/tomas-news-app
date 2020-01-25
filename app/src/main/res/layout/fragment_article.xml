@@ -1,45 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".main.MainActivity">
 
-    <ImageView
-        android:id="@+id/article_imageUrl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <include layout="@layout/activity_article" />
 
-    <TextView
-        android:id="@+id/article_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="20dp"
-        android:textStyle="bold" />
+    <!--    <com.google.android.material.appbar.AppBarLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content">-->
 
-    <TextView
-        android:id="@+id/article_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp" />
+    <!--        <com.google.android.material.appbar.CollapsingToolbarLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            app:contentScrim="?attr/colorPrimary"-->
+    <!--            app:expandedTitleGravity="top"-->
+    <!--            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">-->
 
-    <TextView
-        android:id="@+id/article_author"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right" />
+    <!--            <androidx.appcompat.widget.Toolbar-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="?attr/actionBarSize"-->
+    <!--                app:layout_collapseMode="pin" />-->
+    <!--        </com.google.android.material.appbar.CollapsingToolbarLayout>-->
+    <!--    </com.google.android.material.appbar.AppBarLayout>-->
 
-    <TextView
-        android:id="@+id/article_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right" />
-
-    <Button
-        android:id="@+id/article_readFull"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/read_full_article_online" />
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
