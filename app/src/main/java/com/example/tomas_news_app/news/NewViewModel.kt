@@ -125,7 +125,8 @@ class NewViewModel(
                         it.url,
                         it.urlToImage,
                         it.publishedAt,
-                        it.favorite
+                        it.favorite,
+                        it.sourceId
                     )
                 }
                 .let { _data.postValue(it) }
@@ -143,7 +144,8 @@ class NewViewModel(
                         it.url,
                         it.urlToImage,
                         it.publishedAt,
-                        it.favorite
+                        it.favorite,
+                        sourceId
                     )
                 }
                 .map {
@@ -170,7 +172,8 @@ class NewViewModel(
                         it.url,
                         it.urlToImage,
                         it.publishedAt,
-                        it.favorite
+                        it.favorite,
+                        it.sourceId
                     )
                 }
                 .let { _data.postValue(it) }

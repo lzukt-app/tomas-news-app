@@ -11,9 +11,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.example.tomas_news_app.R
+import com.example.tomas_news_app.main.MainActivity
 import com.example.tomas_news_app.news.NewsItem
 import com.example.tomas_news_app.utils.reFormatDate
 import kotlinx.android.synthetic.main.activity_article.view.*
+import kotlinx.android.synthetic.main.fragment_article.*
+import kotlinx.android.synthetic.main.fragment_article.view.*
 
 class ArticleFragment : Fragment() {
     lateinit var viewModel: ArticleViewModel
@@ -40,11 +43,17 @@ class ArticleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //requireActivity().toolbar.visibility = View.GONE
+        (requireActivity() as MainActivity).setSupportActionBar(toolbar)
+        (requireActivity() as MainActivity).actionBar?.setDisplayHomeAsUpEnabled(true)
+        val article = arguments!!.getParcelable<NewsItem>(KEY_ARTICLE)
+        (requireActivity() as MainActivity).title = article?.sourceId
 
         viewModel.data.observe(this, Observer { newData ->
             Glide.with(view)
-                .load((newData as NewsItem).urlToImage)//.placeholder(R.drawable.loading)
+                .load((newData as NewsItem).urlToImage)
+                .placeholder(R.drawable.news_img_0)
+                .thumbnail(Glide.with(view).load(R.drawable.loading))
+                .dontAnimate()
                 .into(view.article_imageUrl)
             view.article_title.text = newData.title
             view.article_description.text = newData.description
