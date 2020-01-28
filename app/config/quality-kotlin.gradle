@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.1.1"
+        classpath 'de.aaschmid:gradle-cpd-plugin:2.0'
+    }
+}
+apply plugin: io.gitlab.arturbosch.detekt.DetektPlugin
+apply plugin: 'jacoco'
+apply plugin: de.aaschmid.gradle.plugins.cpd.CpdPlugin
+
+cpd {
+    language = 'kotlin'
+    toolVersion = '6.18.0'
+}
+
+cpdCheck {
+    minimumTokenCount = 50
+    ignoreFailures = true
+    source = files('src/main/kotlin')
+}
+
+detekt {
+    input = files("$projectDir")
+    config = files("$projectDir/config/detekt/default-detekt-config.yml")
+}
+dependencies {
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.1.1"
+}
+
+jacoco {
+    toolVersion = "0.8.1"
+    reportsDir = file("$buildDir/reports/jacoco")
+}
+
+tasks.withType(Test).whenTaskAdded {
+    it.jacoco.append = true
+    it.jacoco.classDumpDir = file("$project.buildDir/jacoco/dump")
+}
