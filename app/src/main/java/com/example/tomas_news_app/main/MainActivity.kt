@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSource() {
         supportFragmentManager.beginTransaction()
+            .addToBackStack(null)
             .replace(R.id.container, SourceListFragment.newInstance())
             .commit()
     }

@@ -59,7 +59,8 @@ class NewsListFragment() : Fragment() {
         recycler.layoutManager = LinearLayoutManager(requireContext())
 
         (requireActivity() as MainActivity).setSupportActionBar(toolbar)
-        (requireActivity() as MainActivity).actionBar?.setDisplayHomeAsUpEnabled(true)
+        (requireActivity() as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (requireActivity() as MainActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
         (requireActivity() as MainActivity).title = arguments!!.getString(KEY_SOURCE_TITLE)
 
         val adapter = NewsListAdapter(::onNewSelected, ::onMakeArticleFavorite)
@@ -68,6 +69,10 @@ class NewsListFragment() : Fragment() {
         viewModel.data.observe(this, Observer { newData ->
             adapter.setItems(newData)
         })
+
+        toolbar.setNavigationOnClickListener {
+            (requireActivity() as MainActivity).supportFragmentManager.popBackStack()
+        }
 
         chip_popular_today.setOnClickListener {
             viewModel._chipid.value = 1
