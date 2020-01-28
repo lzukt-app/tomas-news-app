@@ -44,7 +44,7 @@ class FavoriteFragment : Fragment() {
         val adapter = FavoriteAdapter(::onNewSelected, ::onMakeArticleFavorite)
 
         recycler.adapter = adapter
-        viewModel.data.observe(this, Observer { newData ->
+        viewModel.data.observe(viewLifecycleOwner, Observer { newData ->
             adapter.setItems(newData)
         })
     }

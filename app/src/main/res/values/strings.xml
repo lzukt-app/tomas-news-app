@@ -6,7 +6,6 @@
     <string name="tutorial_button">Next</string>
     <string name="tutorial_button_last">Done</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="version">Version</string>
     <string name="developer">Tomas,</string>
     <string name="company">LZUKT</string>
@@ -22,5 +21,7 @@
     <string name="bottom_navigation_source">Source</string>
     <string name="bottom_navigation_favorite">Favorite</string>
     <string name="bottom_navigation_about">About</string>
+    <string name="newsapp_tutorial_screen">NewsApp - Tutorial screen</string>
+    <string name="next">Next</string>
 
 </resources>

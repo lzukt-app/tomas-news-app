@@ -45,8 +45,8 @@ class FavoriteAdapter(
         fun bind(source: NewsItem) {
             Glide.with(itemView)
                 .load(source.urlToImage)
-                .placeholder(R.drawable.news_img_0)
-                .thumbnail(Glide.with(itemView).load(R.drawable.loading))
+                .placeholder(R.mipmap.news_img_0)
+                .thumbnail(Glide.with(itemView).load(R.mipmap.loading))
                 .dontAnimate()
                 .into(itemView.imageUrl)
             itemView.title.text = source.title
@@ -54,9 +54,9 @@ class FavoriteAdapter(
             itemView.datetime.text = reFormatDate(source.publishedAt, "yyyy-MM-dd HH:mm:ss")
             itemView.button_make_favorite.apply {
                 if (source.favorite) {
-                    setBackgroundResource(R.drawable.star)
+                    setBackgroundResource(R.mipmap.star)
                 } else {
-                    setBackgroundResource(R.drawable.star_off)
+                    setBackgroundResource(R.mipmap.star_off)
                 }
             }
             itemView.setOnClickListener {

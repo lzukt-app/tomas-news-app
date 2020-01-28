@@ -12,17 +12,17 @@ class TutorialPagerAdapter(
 ) : FragmentPagerAdapter(fragmentManager) {
     private val configs = listOf(
         TutorialScreenConfig(
-            R.drawable.news_img_0,
+            R.mipmap.news_img_0,
             resources.getString(R.string.tutorial_first_page_label),
             resources.getString(R.string.tutorial_button)
         ),
         TutorialScreenConfig(
-            R.drawable.news_img_1,
+            R.mipmap.news_img_1,
             resources.getString(R.string.tutorial_second_page_label),
             resources.getString(R.string.tutorial_button)
         ),
         TutorialScreenConfig(
-            R.drawable.news_img_2,
+            R.mipmap.news_img_2,
             resources.getString(R.string.tutorial_last_page_label),
             resources.getString(R.string.tutorial_button_last)
         )

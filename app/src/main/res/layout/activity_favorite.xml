@@ -69,7 +69,7 @@
                 android:id="@+id/button_make_favorite"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/star_off" />
+                android:background="@mipmap/star_off" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 

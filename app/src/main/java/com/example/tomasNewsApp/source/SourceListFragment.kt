@@ -44,7 +44,7 @@ class SourceListFragment : Fragment() {
 
         val adapter = SourceListAdapter(::onSourceSelected)
         recycler.adapter = adapter
-        viewModel.data.observe(this, Observer { newData ->
+        viewModel.data.observe(viewLifecycleOwner, Observer { newData ->
             adapter.setItems(newData)
         })
 
