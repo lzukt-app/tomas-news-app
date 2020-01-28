@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.tomas_news_app">
+    package="com.example.tomasNewsApp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".tutorial.TutorialActivity"></activity>
-        <activity android:name=".main.MainActivity">
+        <activity android:name="com.example.tomasNewsApp.tutorial.TutorialActivity"></activity>
+        <activity android:name="com.example.tomasNewsApp.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,7 @@
         </activity>
 
         <service
-            android:name=".utils.MyFirebaseMessagingService"
+            android:name="com.example.tomasNewsApp.utils.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:706635425738:android:1b1c89272d6f46c5489133",
+        "mobilesdk_app_id": "1:706635425738:android:2ebe633c7a979c27489133",
         "android_client_info": {
-          "package_name": "com.example.tomas_news_app"
+          "package_name": "com.example.tomasNewsApp"
         }
       },
       "oauth_client": [
