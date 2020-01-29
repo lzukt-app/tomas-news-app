@@ -68,4 +68,18 @@ class SourceViewModel(
             else (_data.value ?: listOf()).sortedByDescending { it.title }
         )
     }
+
+    fun onSearch(searchText: String) {
+        thread {
+            postArticleListToData(
+                sourceDao
+                    .getSourcesBySearch(searchText)
+                    .map { SourceItem(it.id, it.title, it.description) }
+            )
+        }
+    }
+
+    private fun postArticleListToData(sourceList: List<SourceItem>) {
+        _data.postValue(sourceList)
+    }
 }

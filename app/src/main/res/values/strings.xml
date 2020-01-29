@@ -23,5 +23,6 @@
     <string name="bottom_navigation_about">About</string>
     <string name="newsapp_tutorial_screen">NewsApp - Tutorial screen</string>
     <string name="next">Next</string>
+    <string name="search">Search</string>
 
 </resources>
