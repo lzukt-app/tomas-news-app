@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.example.tomasNewsApp.utils.database.ArticleDao
 import com.example.tomasNewsApp.utils.database.ArticleEntity
 import com.example.tomasNewsApp.utils.formatDate
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.Completable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -24,6 +24,7 @@ class NewViewModel(
     private val articleDao: ArticleDao
 
 ) : ViewModel() {
+    private val disposables = CompositeDisposable()
 
     var chipID = MutableLiveData(POPULAR_TODAY_CHIP_ID)
     val chipid: LiveData<Int> get() = chipID
@@ -41,21 +42,67 @@ class NewViewModel(
 
     fun onPopularTodayArticlesSelected() {
         getArticlesFromDB(POPULAR_TODAY_CHIP_ID)
-        service
+        val disposable = service
             .getTopNewsFromSource(sourceId)
-            .enqueue(object : Callback<NewsListResponse> {
-                override fun onFailure(call: Call<NewsListResponse>, t: Throwable) {
-                    t.printStackTrace()
-                }
-
-                override fun onResponse(
-                    call: Call<NewsListResponse>,
-                    response: Response<NewsListResponse>
-                ) {
-                    updateArticleData(response, POPULAR_TODAY_CHIP_ID)
-                }
-            })
+            .map { response -> response.articles }
+            .map { articles -> articles.map(this::toItem) }
+            .map { items -> items.map(this::toEntity) }
+            .flatMapCompletable { entities -> update(entities, POPULAR_TODAY_CHIP_ID) }
+            .andThen(articleDao.query(sourceId, POPULAR_TODAY_CHIP_ID))
+            .map { entities -> entities.map(this::toItem) }
+            .subscribe(
+                { items -> _data.postValue(items) },
+                { it.printStackTrace() }
+            )
+        disposables.add(disposable)
     }
+
+    private fun toItem(it: ArticleEntity): NewsItem {
+        return NewsItem(
+            it.author,
+            it.title,
+            it.description,
+            it.url,
+            it.urlToImage,
+            it.publishedAt,
+            it.favorite,
+            it.sourceId
+        )
+    }
+
+    private fun toEntity(it: NewsItem): ArticleEntity {
+        return ArticleEntity(
+            sourceId = sourceId,
+            chipId = POPULAR_TODAY_CHIP_ID,
+            author = it.author,
+            title = it.title,
+            description = it.description,
+            url = it.url,
+            urlToImage = it.urlToImage,
+            publishedAt = it.publishedAt,
+            favorite = it.favorite
+        )
+    }
+
+    private fun toItem(it: ArticleResponse): NewsItem {
+        return NewsItem(
+            it.author,
+            it.title,
+            it.description,
+            it.url,
+            it.urlToImage,
+            it.publishedAt,
+            it.favorite,
+            sourceId
+        )
+    }
+
+    private fun update(
+        articles: List<ArticleEntity>,
+        chipId: Int
+    ): Completable =
+        articleDao.deleteAll(sourceId, chipId)
+            .andThen(articleDao.insert(articles))
 
     fun onAllTimeArticlesSelected() {
         getArticlesFromDB(POPULAR_ALL_TIME_CHIP_ID)
@@ -79,17 +126,8 @@ class NewViewModel(
                     )
                 )
             )
-            .enqueue(object : Callback<NewsListResponse> {
-                override fun onFailure(call: Call<NewsListResponse>, t: Throwable) {
-                    t.printStackTrace()
-                }
-
-                override fun onResponse(
-                    call: Call<NewsListResponse>,
-                    response: Response<NewsListResponse>
-                ) {
-                    updateArticleData(response, POPULAR_ALL_TIME_CHIP_ID)
-                }
+            .subscribe({ response ->
+                updateArticleData(response, POPULAR_ALL_TIME_CHIP_ID)
             })
     }
 
@@ -99,25 +137,13 @@ class NewViewModel(
             .getNewestFromSource(
                 sourceId,
                 formatDate(Date())
-            )
-            .enqueue(object : Callback<NewsListResponse> {
-                override fun onFailure(call: Call<NewsListResponse>, t: Throwable) {
-                    t.printStackTrace()
-                }
-
-                override fun onResponse(
-                    call: Call<NewsListResponse>,
-                    response: Response<NewsListResponse>
-                ) {
-                    updateArticleData(response, NEWEST_ARTICLE_CHIP_ID)
-                }
-            })
+            ).subscribe { response -> updateArticleData(response, NEWEST_ARTICLE_CHIP_ID) }
     }
 
     private fun getArticlesFromDB(chipId: Int) {
-        thread {
-            articleDao.query(sourceId, chipId)
-                .map {
+        articleDao.query(sourceId, chipId).subscribeOn(Schedulers.io())
+            .map { list ->
+                list.map {
                     NewsItem(
                         it.author,
                         it.title,
@@ -129,55 +155,26 @@ class NewViewModel(
                         it.sourceId
                     )
                 }
-                .let { _data.postValue(it) }
-        }
+            }
+            .subscribe { list -> _data.postValue(list) }
     }
 
-    private fun updateArticleData(response: Response<NewsListResponse>, chipId: Int) {
-        thread {
-            response.body()!!.articles!!
-                .map {
-                    NewsItem(
-                        it.author,
-                        it.title,
-                        it.description,
-                        it.url,
-                        it.urlToImage,
-                        it.publishedAt,
-                        it.favorite,
-                        sourceId
-                    )
-                }
-                .map {
-                    ArticleEntity(
-                        sourceId = sourceId,
-                        chipId = chipId,
-                        author = it.author,
-                        title = it.title,
-                        description = it.description,
-                        url = it.url,
-                        urlToImage = it.urlToImage,
-                        publishedAt = it.publishedAt,
-                        favorite = it.favorite
-                    )
-                }
-                .also { articleDao.deleteAll(sourceId, chipId) }
-                .also { articleDao.insert(it) }
-                .let { articleDao.query(sourceId, chipId) }
-                .map {
-                    NewsItem(
-                        it.author,
-                        it.title,
-                        it.description,
-                        it.url,
-                        it.urlToImage,
-                        it.publishedAt,
-                        it.favorite,
-                        it.sourceId
-                    )
-                }
-                .let { _data.postValue(it) }
-        }
+    private fun updateArticleData(response: NewsListResponse, chipId: Int) {
+        response.articles!!
+
+//                .map {
+//                    NewsItem(
+//                        it.author,
+//                        it.title,
+//                        it.description,
+//                        it.url,
+//                        it.urlToImage,(
+//                        it.publishedAt,
+//                        it.favorite,
+//                        it.sourceId
+//                    )
+//                }
+//                .let { _data.postValue(it) }
     }
 
     fun changeArticleFavoriteStatus(article: NewsItem) {
@@ -185,5 +182,10 @@ class NewViewModel(
             articleDao.changeFavoriteStatus(article.url)
             getArticlesFromDB(chipid.value!!)
         }
+    }
+
+    override fun onCleared() {
+        disposables.dispose()
+        super.onCleared()
     }
 }

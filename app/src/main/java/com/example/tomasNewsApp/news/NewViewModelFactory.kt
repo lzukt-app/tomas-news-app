@@ -7,6 +7,7 @@ import com.example.tomasNewsApp.utils.database.NewsDatabase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class NewViewModelFactory(private val application: Application, private val sourceId: String) :
@@ -24,6 +25,7 @@ class NewViewModelFactory(private val application: Application, private val sour
             .client(client)
             .baseUrl("https://newsapi.org")
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
         val service = retrofit.create(NewsService::class.java)

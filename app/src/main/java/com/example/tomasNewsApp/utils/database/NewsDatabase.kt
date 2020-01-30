@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import java.util.concurrent.Executors
 
 const val DATABASE_VERSION = 7
 
@@ -15,6 +16,7 @@ abstract class NewsDatabase : RoomDatabase() {
     companion object {
         fun getInstance(context: Context) =
             Room.databaseBuilder(context, NewsDatabase::class.java, "main.db")
+                .setQueryExecutor(Executors.newSingleThreadExecutor())
                 .fallbackToDestructiveMigration()
                 .build()
     }
