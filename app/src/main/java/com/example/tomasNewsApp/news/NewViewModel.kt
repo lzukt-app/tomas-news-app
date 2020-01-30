@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.example.tomasNewsApp.utils.database.ArticleDao
 import com.example.tomasNewsApp.utils.database.ArticleEntity
 import com.example.tomasNewsApp.utils.formatDate
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.Completable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -24,6 +24,7 @@ class NewViewModel(
     private val articleDao: ArticleDao
 
 ) : ViewModel() {
+    private val disposables = CompositeDisposable()
 
     var chipID = MutableLiveData(POPULAR_TODAY_CHIP_ID)
     val chipid: LiveData<Int> get() = chipID
@@ -41,143 +42,140 @@ class NewViewModel(
 
     fun onPopularTodayArticlesSelected() {
         getArticlesFromDB(POPULAR_TODAY_CHIP_ID)
-        service
-            .getTopNewsFromSource(sourceId)
-            .enqueue(object : Callback<NewsListResponse> {
-                override fun onFailure(call: Call<NewsListResponse>, t: Throwable) {
-                    t.printStackTrace()
-                }
-
-                override fun onResponse(
-                    call: Call<NewsListResponse>,
-                    response: Response<NewsListResponse>
-                ) {
-                    updateArticleData(response, POPULAR_TODAY_CHIP_ID)
-                }
-            })
+        val disposable = service.getTopNewsFromSource(sourceId)
+            .map { response -> response.articles }
+            .map { articles -> articles.map(this::toItem) }
+            .map { items -> items.map { this.toEntity(it, POPULAR_TODAY_CHIP_ID) } }
+            .flatMapCompletable { entities -> update(entities, POPULAR_TODAY_CHIP_ID) }
+            .andThen(articleDao.query(sourceId, POPULAR_TODAY_CHIP_ID))
+            .map { entities -> entities.map(this::toItem) }
+            .subscribe(
+                { items -> _data.postValue(items) },
+                { it.printStackTrace() }
+            )
+        disposables.add(disposable)
     }
 
     fun onAllTimeArticlesSelected() {
         getArticlesFromDB(POPULAR_ALL_TIME_CHIP_ID)
-        service
-            .getPopularTodayFromSource(
-                sourceId,
-                formatDate(
-                    Date(
-                        Calendar.getInstance().apply {
-                            time = Date()
-                            add(Calendar.DAY_OF_YEAR, -DAYS_AMOUNT_10)
-                        }.timeInMillis
-                    )
-                ),
-                formatDate(
-                    Date(
-                        Calendar.getInstance().apply {
-                            time = Date()
-                            add(Calendar.DAY_OF_YEAR, -DAYS_AMOUNT_5)
-                        }.timeInMillis
-                    )
+        val disposable = service.getPopularTodayFromSource(
+            sourceId,
+            formatDate(
+                Date(
+                    Calendar.getInstance().apply {
+                        time = Date()
+                        add(Calendar.DAY_OF_YEAR, -DAYS_AMOUNT_10)
+                    }.timeInMillis
+                )
+            ),
+            formatDate(
+                Date(
+                    Calendar.getInstance().apply {
+                        time = Date()
+                        add(Calendar.DAY_OF_YEAR, -DAYS_AMOUNT_5)
+                    }.timeInMillis
                 )
             )
-            .enqueue(object : Callback<NewsListResponse> {
-                override fun onFailure(call: Call<NewsListResponse>, t: Throwable) {
-                    t.printStackTrace()
-                }
-
-                override fun onResponse(
-                    call: Call<NewsListResponse>,
-                    response: Response<NewsListResponse>
-                ) {
-                    updateArticleData(response, POPULAR_ALL_TIME_CHIP_ID)
-                }
-            })
+        )
+            .map { response -> response.articles }
+            .map { articles -> articles.map(this::toItem) }
+            .map { items -> items.map { this.toEntity(it, POPULAR_ALL_TIME_CHIP_ID) } }
+            .flatMapCompletable { entities -> update(entities, POPULAR_ALL_TIME_CHIP_ID) }
+            .andThen(articleDao.query(sourceId, POPULAR_ALL_TIME_CHIP_ID))
+            .map { entities -> entities.map(this::toItem) }
+            .subscribe(
+                { items -> _data.postValue(items) },
+                { it.printStackTrace() }
+            )
+        disposables.add(disposable)
     }
 
     fun onNewestArticlesSelected() {
         getArticlesFromDB(NEWEST_ARTICLE_CHIP_ID)
-        service
-            .getNewestFromSource(
-                sourceId,
-                formatDate(Date())
+        val disposable = service.getNewestFromSource(
+            sourceId,
+            formatDate(Date())
+        )
+            .map { response -> response.articles }
+            .map { articles -> articles.map(this::toItem) }
+            .map { items -> items.map { this.toEntity(it, NEWEST_ARTICLE_CHIP_ID) } }
+            .flatMapCompletable { entities -> update(entities, NEWEST_ARTICLE_CHIP_ID) }
+            .andThen(articleDao.query(sourceId, NEWEST_ARTICLE_CHIP_ID))
+            .map { entities -> entities.map(this::toItem) }
+            .subscribe(
+                { items -> _data.postValue(items) },
+                { it.printStackTrace() }
             )
-            .enqueue(object : Callback<NewsListResponse> {
-                override fun onFailure(call: Call<NewsListResponse>, t: Throwable) {
-                    t.printStackTrace()
-                }
-
-                override fun onResponse(
-                    call: Call<NewsListResponse>,
-                    response: Response<NewsListResponse>
-                ) {
-                    updateArticleData(response, NEWEST_ARTICLE_CHIP_ID)
-                }
-            })
+        disposables.add(disposable)
     }
 
     private fun getArticlesFromDB(chipId: Int) {
-        thread {
-            articleDao.query(sourceId, chipId)
-                .map {
-                    NewsItem(
-                        it.author,
-                        it.title,
-                        it.description,
-                        it.url,
-                        it.urlToImage,
-                        it.publishedAt,
-                        it.favorite,
-                        it.sourceId
-                    )
-                }
-                .let { _data.postValue(it) }
+        val disposable = articleDao.query(sourceId, chipId).subscribeOn(Schedulers.io())
+            .map { list -> toList(list) }
+            .subscribe { list -> _data.postValue(list) }
+        disposables.add(disposable)
+    }
+
+    private fun update(
+        articles: List<ArticleEntity>,
+        chipId: Int
+    ): Completable =
+        articleDao.deleteAll(sourceId, chipId)
+            .andThen(articleDao.insert(articles))
+
+    private fun toList(it: List<ArticleEntity>): List<NewsItem> {
+        return it.map {
+            NewsItem(
+                it.author,
+                it.title,
+                it.description,
+                it.url,
+                it.urlToImage,
+                it.publishedAt,
+                it.favorite,
+                it.sourceId
+            )
         }
     }
 
-    private fun updateArticleData(response: Response<NewsListResponse>, chipId: Int) {
-        thread {
-            response.body()!!.articles!!
-                .map {
-                    NewsItem(
-                        it.author,
-                        it.title,
-                        it.description,
-                        it.url,
-                        it.urlToImage,
-                        it.publishedAt,
-                        it.favorite,
-                        sourceId
-                    )
-                }
-                .map {
-                    ArticleEntity(
-                        sourceId = sourceId,
-                        chipId = chipId,
-                        author = it.author,
-                        title = it.title,
-                        description = it.description,
-                        url = it.url,
-                        urlToImage = it.urlToImage,
-                        publishedAt = it.publishedAt,
-                        favorite = it.favorite
-                    )
-                }
-                .also { articleDao.deleteAll(sourceId, chipId) }
-                .also { articleDao.insert(it) }
-                .let { articleDao.query(sourceId, chipId) }
-                .map {
-                    NewsItem(
-                        it.author,
-                        it.title,
-                        it.description,
-                        it.url,
-                        it.urlToImage,
-                        it.publishedAt,
-                        it.favorite,
-                        it.sourceId
-                    )
-                }
-                .let { _data.postValue(it) }
-        }
+    private fun toItem(it: ArticleEntity): NewsItem {
+        return NewsItem(
+            it.author,
+            it.title,
+            it.description,
+            it.url,
+            it.urlToImage,
+            it.publishedAt,
+            it.favorite,
+            it.sourceId
+        )
+    }
+
+    private fun toItem(it: ArticleResponse): NewsItem {
+        return NewsItem(
+            it.author,
+            it.title,
+            it.description,
+            it.url,
+            it.urlToImage,
+            it.publishedAt,
+            it.favorite,
+            sourceId
+        )
+    }
+
+    private fun toEntity(it: NewsItem, chipId: Int): ArticleEntity {
+        return ArticleEntity(
+            sourceId = sourceId,
+            chipId = chipId,
+            author = it.author,
+            title = it.title,
+            description = it.description,
+            url = it.url,
+            urlToImage = it.urlToImage,
+            publishedAt = it.publishedAt,
+            favorite = it.favorite
+        )
     }
 
     fun changeArticleFavoriteStatus(article: NewsItem) {
@@ -185,5 +183,10 @@ class NewViewModel(
             articleDao.changeFavoriteStatus(article.url)
             getArticlesFromDB(chipid.value!!)
         }
+    }
+
+    override fun onCleared() {
+        disposables.dispose()
+        super.onCleared()
     }
 }

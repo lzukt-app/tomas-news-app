@@ -5,12 +5,14 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import io.reactivex.Completable
+import io.reactivex.Single
 
 @Dao
 interface ArticleDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(articles: List<ArticleEntity>)
+    fun insert(articles: List<ArticleEntity>): Completable
 
     @Delete
     fun delete(articles: List<ArticleEntity>)
@@ -20,7 +22,7 @@ interface ArticleDao {
                 SELECT * FROM ArticleEntity WHERE sourceId = :sourceId AND chipId = :chipId ORDER BY publishedAt DESC
             """
     )
-    fun query(sourceId: String, chipId: Int): List<ArticleEntity>
+    fun query(sourceId: String, chipId: Int): Single<List<ArticleEntity>>
 
     @Query(
         """
@@ -34,7 +36,7 @@ interface ArticleDao {
             DELETE FROM ArticleEntity WHERE chipId = :chipId AND sourceId = :sourceId AND NOT favorite
         """
     )
-    fun deleteAll(sourceId: String, chipId: Int)
+    fun deleteAll(sourceId: String, chipId: Int): Completable
 
     @Query(
         value = """
