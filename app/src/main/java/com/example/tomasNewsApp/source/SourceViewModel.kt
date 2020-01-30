@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tomasNewsApp.utils.database.SourceDao
 import com.example.tomasNewsApp.utils.database.SourceEntity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
 class SourceViewModel(
@@ -15,6 +16,7 @@ class SourceViewModel(
     private val sourceDao: SourceDao
 
 ) : ViewModel() {
+    private val disposables = CompositeDisposable()
 
     var sortID = MutableLiveData(true)
     val sortid: LiveData<Boolean> get() = sortID
@@ -22,44 +24,72 @@ class SourceViewModel(
     private val _data = MutableLiveData<List<SourceItem>>()
     val data: LiveData<List<SourceItem>> get() = _data
 
-    fun onCreate() {
-        thread {
-            if (sortid.value == true) {
-                sourceDao.query()
-                    .map { SourceItem(it.id, it.title, it.description) }
-                    .let { _data.postValue(it) }
-            } else {
-                sourceDao.queryDESC()
-                    .map { SourceItem(it.id, it.title, it.description) }
-                    .let { _data.postValue(it) }
-            }
-        }
-        service
-            .getSources()
-            .enqueue(object : Callback<SourceListResponse> {
-                override fun onFailure(call: Call<SourceListResponse>, t: Throwable) {
-                    t.printStackTrace()
-                }
+    val publishSubject = PublishSubject.create<String>();
 
-                override fun onResponse(
-                    call: Call<SourceListResponse>,
-                    response: Response<SourceListResponse>
-                ) {
-                    thread {
-                        response.body()!!.sources
-                            .map { SourceItem(it.id, it.name, it.description) }
-                            .map { SourceEntity(it.id, it.title, it.description) }
-                            .also { sourceDao.insert(it) }
-                        (if (sortID.value == true) {
-                            this.let { sourceDao.query() }
-                        } else {
-                            this.let { sourceDao.queryDESC() }
-                        })
-                            .map { SourceItem(it.id, it.title, it.description) }
-                            .let { _data.postValue(it) }
-                    }
-                }
-            })
+    fun onCreate() {
+        val disposable = service.getSources()
+            .map { response -> response.sources }
+            .map { sources -> sources.map(::toItem) }
+            .map { items -> items.map { this.toEntity(it) } }
+            .flatMapCompletable { entities ->
+                sourceDao.insert(entities)
+            }
+            .andThen(
+                (if (sortID.value == true) {
+                    this.let { sourceDao.query() }
+                } else {
+                    this.let { sourceDao.queryDESC() }
+                })
+            )
+            .map { entities -> entities.map(::toItem) }
+            .subscribe(
+                { items -> _data.postValue(items) },
+                { it.printStackTrace() }
+            )
+
+        val publishDisposable = publishSubject.filter { it.length > 2 }
+            .debounce(200, TimeUnit.MILLISECONDS)
+            .flatMapSingle { query ->
+                sourceDao.getSourcesBySearch(query)
+                    .subscribeOn(Schedulers.io())
+            }
+            .subscribe { it ->
+                postArticleListToData(it.map { SourceItem(it.id, it.title, it.description) })
+            }
+        disposables.add(disposable)
+        disposables.add(publishDisposable)
+    }
+
+    fun onSearch(searchText: String) {
+//        val disposable =sourceDao.getSourcesBySearch(searchText)
+//            .subscribeOn(Schedulers.io())
+//            .subscribe { it ->
+//                postArticleListToData(it.map { SourceItem(it.id, it.title, it.description) })
+//            }
+//            disposables.add(disposable)
+        publishSubject.onNext(searchText)
+    }
+
+    private fun toItem(it: SourceEntity): SourceItem {
+        return SourceItem(
+            it.id,
+            it.title,
+            it.description
+        )
+    }
+
+    private fun toItem(it: SourceResponse): SourceItem {
+        return SourceItem(
+            it.id,
+            it.name,
+            it.description
+        )
+    }
+
+    private fun toEntity(it: SourceItem): SourceEntity {
+        return SourceEntity(
+            it.id, it.title, it.description
+        )
     }
 
     fun sortSourceList() {
@@ -69,17 +99,13 @@ class SourceViewModel(
         )
     }
 
-    fun onSearch(searchText: String) {
-        thread {
-            postArticleListToData(
-                sourceDao
-                    .getSourcesBySearch(searchText)
-                    .map { SourceItem(it.id, it.title, it.description) }
-            )
-        }
-    }
 
     private fun postArticleListToData(sourceList: List<SourceItem>) {
         _data.postValue(sourceList)
+    }
+
+    override fun onCleared() {
+        disposables.dispose()
+        super.onCleared()
     }
 }

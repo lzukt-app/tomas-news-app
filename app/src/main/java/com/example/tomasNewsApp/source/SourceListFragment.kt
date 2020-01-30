@@ -17,7 +17,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tomasNewsApp.R
 import com.example.tomasNewsApp.main.MainActivity
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_source_list.*
+import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
 class SourceListFragment : Fragment() {
@@ -82,16 +84,36 @@ class SourceListFragment : Fragment() {
         Log.d("TEST2", "grybas")
 
         val searchView: SearchView = menu.findItem(R.id.action_search).actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.onSearch(query!!)
-                return true
-            }
+//        val disposable = Observable.create<String> { emitter ->
+//            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//                override fun onQueryTextSubmit(query: String?): Boolean {
+//                    return true
+//                }
+//
+//                override fun onQueryTextChange(newText: String?): Boolean {
+//                    emitter.onNext(newText.orEmpty())
+//                    return true
+//                }
+//            })
+//            emitter.setCancellable { searchView.setOnQueryTextListener(null) }
+//        }
+//            .filter { it.length > 2 }
+//            .debounce(200, TimeUnit.MILLISECONDS)
+//            .subscribe { viewModel.onSearch(it) }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
-            }
-        })
+        val disposable = Observable.create<String> { emitter ->
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    emitter.onNext(newText.orEmpty())
+                    return true
+                }
+            })
+            emitter.setCancellable { searchView.setOnQueryTextListener(null) }
+        }.subscribe { viewModel.onSearch(it) }
 
         menu.findItem(R.id.action_search)
             .setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
