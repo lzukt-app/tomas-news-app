@@ -9,7 +9,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
-import kotlin.concurrent.thread
+
+const val DEBOUNCE_VALUE: Long = 200
 
 class SourceViewModel(
     private val service: SourceService,
@@ -24,7 +25,7 @@ class SourceViewModel(
     private val _data = MutableLiveData<List<SourceItem>>()
     val data: LiveData<List<SourceItem>> get() = _data
 
-    val publishSubject = PublishSubject.create<String>();
+    val publishSubject = PublishSubject.create<String>()
 
     fun onCreate() {
         val disposable = service.getSources()
@@ -48,7 +49,7 @@ class SourceViewModel(
             )
 
         val publishDisposable = publishSubject.filter { it.length > 2 }
-            .debounce(200, TimeUnit.MILLISECONDS)
+            .debounce(DEBOUNCE_VALUE, TimeUnit.MILLISECONDS)
             .flatMapSingle { query ->
                 sourceDao.getSourcesBySearch(query)
                     .subscribeOn(Schedulers.io())
@@ -61,12 +62,14 @@ class SourceViewModel(
     }
 
     fun onSearch(searchText: String) {
+        // The first way to search
 //        val disposable =sourceDao.getSourcesBySearch(searchText)
 //            .subscribeOn(Schedulers.io())
 //            .subscribe { it ->
 //                postArticleListToData(it.map { SourceItem(it.id, it.title, it.description) })
 //            }
 //            disposables.add(disposable)
+        // The second way to search
         publishSubject.onNext(searchText)
     }
 
@@ -98,7 +101,6 @@ class SourceViewModel(
             else (_data.value ?: listOf()).sortedByDescending { it.title }
         )
     }
-
 
     private fun postArticleListToData(sourceList: List<SourceItem>) {
         _data.postValue(sourceList)

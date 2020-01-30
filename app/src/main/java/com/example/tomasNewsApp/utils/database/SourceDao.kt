@@ -12,10 +12,10 @@ import io.reactivex.Single
 interface SourceDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(sources: List<SourceEntity>) : Completable
+    fun insert(sources: List<SourceEntity>): Completable
 
     @Delete
-    fun delete(sources: List<SourceEntity>) : Completable
+    fun delete(sources: List<SourceEntity>): Completable
 
     @Query(
         """
