@@ -48,8 +48,6 @@ class NewsListAdapter(
         fun bind(source: NewsItem) {
             Glide.with(itemView)
                 .load(source.urlToImage)
-                .placeholder(R.mipmap.news_img_0)
-                .thumbnail(Glide.with(itemView).load(R.mipmap.loading))
                 .dontAnimate()
                 .into(itemView.imageUrl)
             itemView.title.text = source.title

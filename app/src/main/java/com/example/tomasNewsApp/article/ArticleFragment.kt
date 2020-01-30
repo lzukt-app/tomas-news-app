@@ -49,8 +49,6 @@ class ArticleFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner, Observer { newData ->
             Glide.with(view)
                 .load((newData as NewsItem).urlToImage)
-                .placeholder(R.mipmap.news_img_0)
-                .thumbnail(Glide.with(view).load(R.mipmap.loading))
                 .dontAnimate()
                 .into(view.article_imageUrl)
             view.article_title.text = newData.title
