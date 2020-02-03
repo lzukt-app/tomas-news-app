@@ -36,6 +36,7 @@ class ExampleUnitTest {
             .filter { true }
             .subscribe({ println(it) }, { it is Exception }, { -> print("complete") })
         println("post")
+        println(observable)
 
 //        Completable
 //        Single

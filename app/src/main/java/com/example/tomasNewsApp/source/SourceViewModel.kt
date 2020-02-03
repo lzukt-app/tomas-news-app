@@ -36,11 +36,11 @@ class SourceViewModel(
                 sourceDao.insert(entities)
             }
             .andThen(
-                (if (sortID.value == true) {
+                if (sortID.value == true) {
                     this.let { sourceDao.query() }
                 } else {
                     this.let { sourceDao.queryDESC() }
-                })
+                }
             )
             .map { entities -> entities.map(::toItem) }
             .subscribe(
