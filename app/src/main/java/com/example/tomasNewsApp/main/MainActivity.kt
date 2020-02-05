@@ -10,6 +10,8 @@ import com.example.tomasNewsApp.R
 import com.example.tomasNewsApp.about.AboutFragment
 import com.example.tomasNewsApp.article.ArticleFragment
 import com.example.tomasNewsApp.favorite.FavoriteFragment
+import com.example.tomasNewsApp.googleMap.GoogleMapFragment
+import com.example.tomasNewsApp.map.MapFragment
 import com.example.tomasNewsApp.news.NewsItem
 import com.example.tomasNewsApp.news.NewsListFragment
 import com.example.tomasNewsApp.source.SourceItem
@@ -53,6 +55,14 @@ class MainActivity : AppCompatActivity() {
                 this.showFavorite()
                 true
             }
+            R.id.bottom_navigation_map -> {
+                this.showMap()
+                true
+            }
+            R.id.bottom_navigation_google_map -> {
+                this.showGoogleMap()
+                true
+            }
             else -> {
                 this.showAbout()
                 true
@@ -94,10 +104,26 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+    private fun showGoogleMap() {
+        supportFragmentManager.beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.container, GoogleMapFragment.newInstance())
+            .commit()
+    }
+
+    private fun showMap() {
+        supportFragmentManager.beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.container, MapFragment.newInstance())
+            .commit()
+    }
+
+
     private fun showAbout() {
         supportFragmentManager.beginTransaction()
             .addToBackStack(null)
             .replace(R.id.container, AboutFragment.newInstance())
             .commit()
     }
+
 }

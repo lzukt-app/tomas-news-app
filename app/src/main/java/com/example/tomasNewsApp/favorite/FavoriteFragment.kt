@@ -39,7 +39,7 @@ class FavoriteFragment : Fragment() {
 
         (requireActivity() as MainActivity).setSupportActionBar(toolbar)
         (requireActivity() as MainActivity).actionBar?.setDisplayHomeAsUpEnabled(true)
-        (requireActivity() as MainActivity).title = "Favorites"
+        (requireActivity() as MainActivity).title = getString(R.string.toolbar_title_favorites)
 
         val adapter = FavoriteAdapter(::onNewSelected, ::onMakeArticleFavorite)
 
