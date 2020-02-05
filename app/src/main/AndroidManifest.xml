@@ -14,17 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.example.tomasNewsApp.tutorial.TutorialActivity" />
-        <activity android:name="com.example.tomasNewsApp.main.MainActivity">
+        <activity
+            android:name=".landing.SplashActivity"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".tutorial.TutorialActivity"
+            android:theme="@style/AppTheme.Tutorial" />
+        <activity
+            android:name=".main.MainActivity"
+            android:screenOrientation="portrait" />
 
         <service
-            android:name="com.example.tomasNewsApp.utils.MyFirebaseMessagingService"
+            android:name=".utils.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

@@ -9,7 +9,7 @@
         android:id="@+id/imageUrl"
         android:layout_width="274dp"
         android:layout_height="272dp"
-        android:src="@mipmap/news_img_0"
+        android:src="@drawable/news_img_0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"

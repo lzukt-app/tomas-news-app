@@ -9,13 +9,11 @@ class MainViewModel constructor(
     private val preferences: SharedPreferences
 ) : ViewModel() {
 
-    private val _showTutorial = SingleLiveData<Unit>()
-    val showTutorial: LiveData<Unit> get() = _showTutorial
+    private val _showTutorial = SingleLiveData<Boolean>()
+    val showTutorial: LiveData<Boolean> get() = _showTutorial
 
     fun onCreate() {
-        if (!preferences.getBoolean("tutorial_is_shown", false)) {
-            _showTutorial.postValue(Unit)
-            preferences.edit().putBoolean("tutorial_is_shown", true).apply()
-        }
+        _showTutorial.postValue(!preferences.getBoolean("tutorial_is_shown", false))
+        preferences.edit().putBoolean("tutorial_is_shown", true).apply()
     }
 }

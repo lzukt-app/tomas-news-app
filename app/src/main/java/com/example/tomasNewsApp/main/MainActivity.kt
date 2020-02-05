@@ -1,5 +1,6 @@
 package com.example.tomasNewsApp.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -19,24 +20,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var viewModel: MainViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
         navView.setOnNavigationItemSelectedListener { onBottomNavigationEvent(it) }
-
-        viewModel = ViewModelProviders.of(
-            this,
-            MainViewModelFactory(application)
-        )
-            .get(MainViewModel::class.java)
-
-        viewModel.showTutorial.observe(this, Observer { newData ->
-            this.showTutorial()
-        })
 
         if (savedInstanceState == null) {
             this.showSource()
@@ -58,10 +46,6 @@ class MainActivity : AppCompatActivity() {
                 true
             }
         }
-    }
-
-    private fun showTutorial() {
-        startActivity(Intent(this, TutorialActivity::class.java))
     }
 
     private fun showSource() {
@@ -99,5 +83,9 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(null)
             .replace(R.id.container, AboutFragment.newInstance())
             .commit()
+    }
+
+    companion object {
+        fun createIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
 }
