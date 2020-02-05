@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         navView.setOnNavigationItemSelectedListener { onBottomNavigationEvent(it) }
 //        startActivityForResult()
         if (savedInstanceState == null) {
-            this.showSource()
+            this.showSource(false)
         }
     }
 
@@ -91,11 +91,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSource() {
-        supportFragmentManager.beginTransaction()
-            .addToBackStack(null)
-            .replace(R.id.container, SourceListFragment.newInstance())
-            .commit()
+    private fun showSource(addToBackStack: Boolean = true) {
+        supportFragmentManager.beginTransaction().apply {
+            if (addToBackStack) addToBackStack(null)
+            replace(
+                R.id.container,
+                SourceListFragment.newInstance()
+            )
+        }.commit()
     }
 
     fun showNews(source: SourceItem) {
