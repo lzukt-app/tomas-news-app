@@ -10,9 +10,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.getSystemService
-import androidx.core.content.pm.PermissionInfoCompat
 import com.example.tomasNewsApp.R
 import com.example.tomasNewsApp.about.AboutFragment
 import com.example.tomasNewsApp.article.ArticleFragment
@@ -22,6 +20,8 @@ import com.example.tomasNewsApp.news.NewsListFragment
 import com.example.tomasNewsApp.source.SourceItem
 import com.example.tomasNewsApp.source.SourceListFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
+private const val LOCATION_PERMISSION = 23
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                 getSystemService<LocationManager>()?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
             Log.e("location", lastKnownLocation.toString())
         } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 23)
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION)
         } else {
             Toast.makeText(this, "always denied", Toast.LENGTH_SHORT).show()
         }
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 23) {
+        if (requestCode == LOCATION_PERMISSION) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 val lastKnownLocation =
                     getSystemService<LocationManager>()?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
@@ -59,11 +59,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "granted", Toast.LENGTH_SHORT).show()
             } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    //oh come on
+                    // oh come on
                     Toast.makeText(this, "denied", Toast.LENGTH_SHORT).show()
-                    requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 23)
+                    requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION)
                 } else {
-                    //explain how to get toi settings
+                    // explain how to get toi settings
                     Toast.makeText(this, "always denied", Toast.LENGTH_SHORT).show()
                 }
             }
