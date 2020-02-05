@@ -33,8 +33,10 @@ class MainActivity : AppCompatActivity() {
             val lastKnownLocation =
                 getSystemService<LocationManager>()?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
             Log.e("location", lastKnownLocation.toString())
-        } else {
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 23)
+        } else {
+            Toast.makeText(this, "always denied", Toast.LENGTH_SHORT).show()
         }
         navView.setOnNavigationItemSelectedListener { onBottomNavigationEvent(it) }
 //        startActivityForResult()
