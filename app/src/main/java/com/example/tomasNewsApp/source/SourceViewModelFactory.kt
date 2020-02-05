@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.tomasNewsApp.utils.database.NewsDatabase
+import com.example.tomasNewsApp.utils.location.LocationManager
+import com.google.android.gms.location.LocationServices
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -16,6 +18,12 @@ class SourceViewModelFactory(private val application: Application) :
         application
     ) {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+
+        val manager = LocationManager(
+            LocationServices.getFusedLocationProviderClient(application),
+            LocationServices.getSettingsClient(application)
+        )
+
         val client = OkHttpClient.Builder()
             .addNetworkInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
@@ -33,7 +41,8 @@ class SourceViewModelFactory(private val application: Application) :
 
         return SourceViewModel(
             service,
-            NewsDatabase.getInstance(application).sourceDao
+            NewsDatabase.getInstance(application).sourceDao,
+            manager
         ).apply { onCreate() } as T
     }
 }
