@@ -1,5 +1,7 @@
 package com.example.tomasNewsApp.tutorial
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tomasNewsApp.R
@@ -24,5 +26,9 @@ class TutorialActivity : AppCompatActivity() {
         } else {
             viewpager.setCurrentItem(viewpager.currentItem + 1)
         }
+    }
+
+    companion object {
+        fun createIntent(context: Context) = Intent(context, TutorialActivity::class.java)
     }
 }

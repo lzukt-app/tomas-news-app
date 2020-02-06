@@ -25,4 +25,7 @@
     <string name="next">Next</string>
     <string name="search">Search</string>
 
+    <string name="common_notification_channel_general">general</string>
+    <string name="myChannel">myChannel</string>
+
 </resources>
