@@ -1,13 +1,19 @@
 package com.example.tomasNewsApp.main
 
 import android.Manifest
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.getSystemService
+import androidx.core.net.ConnectivityManagerCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.tomasNewsApp.R
 import com.example.tomasNewsApp.about.AboutFragment
 import com.example.tomasNewsApp.article.ArticleFragment
@@ -23,9 +29,34 @@ private const val LOCATION_PERMISSION = 23
 class MainActivity : AppCompatActivity() {
     //    lateinit var disposable: Disposable
 
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val connectivityManager = getSystemService<ConnectivityManager>()!!
+            val info =
+                ConnectivityManagerCompat.getNetworkInfoFromBroadcast(connectivityManager, intent)
+            if (info != null && info.isAvailable && info.isConnected) {
+                Toast.makeText(this@MainActivity, "connected", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@MainActivity, "disconnected", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        registerReceiver(broadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                assert(intent.getStringExtra("extra") == "value")
+            }
+        }, IntentFilter("myAction"))
+
+        LocalBroadcastManager.getInstance(this)
+            .sendBroadcast(Intent("myAction").apply { putExtra("extra", "value") })
+
         val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
         } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
