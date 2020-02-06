@@ -11,6 +11,8 @@ import com.google.android.gms.tasks.Task
 import io.reactivex.Maybe
 import io.reactivex.Observable
 
+private const val LOCATION_GPS = 22
+
 class LocationManager(
     private val locationClient: FusedLocationProviderClient,
     private val settingsClient: SettingsClient
@@ -41,7 +43,6 @@ class LocationManager(
     fun checkLocationSettings(activity: Activity) {
         settingsClient.checkLocationSettings(SETTINGS_REQUEST)
             .addOnCompleteListener { checkLocationSettingsResponse(activity, it) }
-
     }
 
     private fun checkLocationSettingsResponse(
@@ -63,7 +64,7 @@ class LocationManager(
     ) {
         try {
             val resolvable = exception as ResolvableApiException
-            resolvable.startResolutionForResult(activity, 22)
+            resolvable.startResolutionForResult(activity, LOCATION_GPS)
         } catch (cause: IntentSender.SendIntentException) {
             // Do nothing
         } catch (cause: ClassCastException) {
@@ -89,5 +90,4 @@ class LocationManager(
             .setAlwaysShow(true)
             .build()
     }
-
 }
