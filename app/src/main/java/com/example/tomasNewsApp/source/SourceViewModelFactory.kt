@@ -3,6 +3,7 @@ package com.example.tomasNewsApp.source
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.tomasNewsApp.NewsApplication
 import com.example.tomasNewsApp.utils.database.NewsDatabase
 import com.example.tomasNewsApp.utils.location.LocationManager
 import com.google.android.gms.location.LocationServices
@@ -24,20 +25,7 @@ class SourceViewModelFactory(private val application: Application) :
             LocationServices.getSettingsClient(application)
         )
 
-        val client = OkHttpClient.Builder()
-            .addNetworkInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .client(client)
-            .baseUrl("https://newsapi.org")
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
-            .build()
-
-        val service = retrofit.create(SourceService::class.java)
+        val service = (application as NewsApplication).retrofit.create(SourceService::class.java)
 
         return SourceViewModel(
             service,
