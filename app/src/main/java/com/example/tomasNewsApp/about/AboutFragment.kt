@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.tomasNewsApp.BuildConfig
 import com.example.tomasNewsApp.R
+import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.fragment_about.*
 
 class AboutFragment : Fragment() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -29,6 +29,10 @@ class AboutFragment : Fragment() {
         other.text = "${getString(R.string.developer)} ${getString(
             R.string.company
         )}"
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     companion object {

@@ -10,6 +10,7 @@ class MainViewModelFactory(private val application: Application) :
     ViewModelProvider.AndroidViewModelFactory(
         application
     ) {
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return MainViewModel(
             application.getSharedPreferences(

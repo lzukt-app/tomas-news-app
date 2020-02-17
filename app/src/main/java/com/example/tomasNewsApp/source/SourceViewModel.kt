@@ -1,10 +1,12 @@
 package com.example.tomasNewsApp.source
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tomasNewsApp.utils.database.SourceDao
 import com.example.tomasNewsApp.utils.database.SourceEntity
+import com.example.tomasNewsApp.utils.location.LocationManager
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -14,8 +16,8 @@ const val DEBOUNCE_VALUE: Long = 200
 
 class SourceViewModel(
     private val service: SourceService,
-    private val sourceDao: SourceDao
-
+    private val sourceDao: SourceDao,
+    private val manager: LocationManager
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
 
@@ -28,6 +30,9 @@ class SourceViewModel(
     val publishSubject = PublishSubject.create<String>()
 
     fun onCreate() {
+        disposables.add(manager.locationUpdates.subscribe {
+            Log.d("SourceViewModel", it.toString())
+        })
         val disposable = service.getSources()
             .map { response -> response.sources }
             .map { sources -> sources.map(::toItem) }
