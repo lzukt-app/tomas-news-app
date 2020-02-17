@@ -22,6 +22,7 @@ import com.example.tomasNewsApp.news.NewsItem
 import com.example.tomasNewsApp.news.NewsListFragment
 import com.example.tomasNewsApp.source.SourceItem
 import com.example.tomasNewsApp.source.SourceListFragment
+import com.example.tomasNewsApp.utils.database.NewsDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private const val LOCATION_PERMISSION = 23
@@ -44,6 +45,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        NewsDatabase.getInstance(this)
+
         setContentView(R.layout.activity_main)
 
         registerReceiver(broadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))

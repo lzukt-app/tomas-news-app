@@ -14,10 +14,22 @@ abstract class NewsDatabase : RoomDatabase() {
     abstract val articleDao: ArticleDao
 
     companion object {
-        fun getInstance(context: Context) =
-            Room.databaseBuilder(context, NewsDatabase::class.java, "main.db")
+        // not needed
+        var context: Context? = null
+        fun getInstance(context: Context): NewsDatabase {
+            if (this.context == null) {
+                this.context = context/*.applicationContext*/
+            }
+            return Room.databaseBuilder(context, NewsDatabase::class.java, "main.db")
+
                 .setQueryExecutor(Executors.newSingleThreadExecutor())
                 .fallbackToDestructiveMigration()
                 .build()
+        }
+//        fun getInstance(context: Context) =
+//            Room.databaseBuilder(context, NewsDatabase::class.java, "main.db")
+//                .setQueryExecutor(Executors.newSingleThreadExecutor())
+//                .fallbackToDestructiveMigration()
+//                .build()
     }
 }

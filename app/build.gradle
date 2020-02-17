@@ -63,11 +63,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
     implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta01'
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
-
     implementation "com.google.android.gms:play-services-location:17.0.0"
 
-    implementation "io.reactivex.rxjava2:rxjava:2.2.17"
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 
+    implementation "io.reactivex.rxjava2:rxjava:2.2.17"
     def room_version = "2.2.3"
 
     implementation "androidx.room:room-runtime:$room_version"
