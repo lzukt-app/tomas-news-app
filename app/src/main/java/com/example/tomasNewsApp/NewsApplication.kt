@@ -23,7 +23,6 @@ private const val MY_CHANEL_CODE = 4
 class NewsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (NotificationManagerCompat.from(this).getNotificationChannel(getString(R.string.myChannel)) == null) {
                 NotificationManagerCompat.from(this).createNotificationChannel(
@@ -80,6 +79,4 @@ class NewsApplication : Application() {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .build()
     }
-
-
 }

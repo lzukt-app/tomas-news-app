@@ -14,8 +14,6 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_about.*
 
 class AboutFragment : Fragment() {
-    lateinit var disposable: Disposable
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -34,23 +32,10 @@ class AboutFragment : Fragment() {
         other.text = "${getString(R.string.developer)} ${getString(
             R.string.company
         )}"
-
-        val manager =
-            LocationManager(
-                LocationServices.getFusedLocationProviderClient(requireActivity()),
-                LocationServices.getSettingsClient(requireActivity())
-            )
-        disposable = manager.locationUpdates
-            .mergeWith(manager.lastLocation)
-            .doOnSubscribe { manager.checkLocationSettings(requireActivity()) }
-            .subscribe {
-                Log.d("lcoation", it.toString())
-            }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        disposable.dispose()
     }
 
     companion object {
