@@ -12,6 +12,16 @@
         android:title="@string/bottom_navigation_favorite" />
 
     <item
+        android:id="@+id/bottom_navigation_google_map"
+        android:icon="@drawable/map"
+        android:title="@string/bottom_navigation_google_map" />
+
+    <item
+        android:id="@+id/bottom_navigation_map"
+        android:icon="@drawable/map"
+        android:title="@string/bottom_navigation_map" />
+
+    <item
         android:id="@+id/bottom_navigation_about"
         android:icon="@drawable/ic_about_white"
         android:title="@string/bottom_navigation_about" />
